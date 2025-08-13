@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contact Us - Bloom & Blossom</title>
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/flowerlogo.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+        <style>
+            :root {
+                --primary-color: #2D3748;
+                --secondary-color: #4FD1C7;
+                --accent-color: #F093FB;
+                --text-primary: #2D3748;
+                --text-secondary: #718096;
+                --bg-light: #F7FAFC;
+                --bg-white: #FFFFFF;
+                --border-color: #E2E8F0;
+                --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #00f2fe 100%);
+                min-height: 100vh;
+                line-height: 1.6;
+                color: var(--text-primary);
+            }
+
+            /* Navigation */
+            .navbar {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                transition: all 0.3s ease;
+            }
+
+            .nav-container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 0 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 80px;
+            }
+
+            .logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .logo i {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2.5rem;
+            }
+
+            .nav-menu {
+                display: flex;
+                list-style: none;
+                gap: 2.5rem;
+                align-items: center;
+            }
+
+            .nav-menu a {
+                text-decoration: none;
+                color: var(--text-primary);
+                font-weight: 500;
+                font-size: 0.95rem;
+                position: relative;
+                transition: all 0.3s ease;
+                padding: 0.5rem 0;
+            }
+
+            .nav-menu a::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                transition: width 0.3s ease;
+            }
+
+            .nav-menu a:hover::after {
+                width: 100%;
+            }
+
+            .nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+            }
+
+            .search-container {
+                position: relative;
+            }
+
+            .search-box {
+                background: rgba(247, 250, 252, 0.9);
+                border: 2px solid var(--border-color);
+                border-radius: 50px;
+                padding: 0.75rem 3rem 0.75rem 1.5rem;
+                width: 280px;
+                outline: none;
+                transition: all 0.3s ease;
+                font-size: 0.9rem;
+            }
+
+            .search-box:focus {
+                border-color: var(--secondary-color);
+                background: white;
+                box-shadow: 0 0 0 4px rgba(79, 209, 199, 0.1);
+            }
+
+            .search-icon {
+                position: absolute;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-secondary);
+                pointer-events: none;
+            }
+
+            .cart-btn {
+                position: relative;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0.75rem;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+                font-size: 1.2rem;
+            }
+
+            .cart-btn:hover {
+                background: rgba(79, 209, 199, 0.1);
+                transform: translateY(-2px);
+            }
+
+            .cart-count {
+                position: absolute;
+                top: 0.25rem;
+                right: 0.25rem;
+                background: linear-gradient(45deg, #F093FB, #F5576C);
+                color: white;
+                border-radius: 50%;
+                width: 1.25rem;
+                height: 1.25rem;
+                font-size: 0.7rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+            }
+
+            .auth-buttons {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                border-radius: 25px;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn-outline {
+                background: transparent;
+                border: 2px solid var(--secondary-color);
+                color: var(--secondary-color);
+            }
+
+            .btn-outline:hover {
+                background: var(--secondary-color);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
+
+            .btn-gradient {
+                background: linear-gradient(45deg, #F093FB, #F5576C);
+                color: white;
+                border: none;
+            }
+
+            .btn-gradient:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(240, 147, 251, 0.4);
+            }
+
+            /* User Dropdown Styles */
+            .user-dropdown {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+
+            .user-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0.75rem;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 45px;
+                height: 45px;
+                background: rgba(79, 209, 199, 0.1);
+                border: 2px solid transparent;
+            }
+
+            .user-btn:hover {
+                background: rgba(79, 209, 199, 0.2);
+                transform: translateY(-2px);
+                border-color: var(--secondary-color);
+                box-shadow: 0 4px 12px rgba(79, 209, 199, 0.3);
+            }
+
+            .user-btn.active {
+                background: var(--secondary-color);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(79, 209, 199, 0.4);
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: calc(100% + 10px);
+                right: 0;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                border: 1px solid var(--border-color);
+                min-width: 220px;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+            }
+
+            .dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .dropdown-menu::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                right: 15px;
+                width: 16px;
+                height: 16px;
+                background: white;
+                border: 1px solid var(--border-color);
+                border-bottom: none;
+                border-right: none;
+                transform: rotate(45deg);
+            }
+
+            .dropdown-header {
+                padding: 20px 20px 15px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .dropdown-header h4 {
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--text-primary);
+                margin-bottom: 4px;
+            }
+
+            .dropdown-header p {
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+                margin: 0;
+            }
+
+            .dropdown-content {
+                padding: 10px 0;
+            }
+
+            .dropdown-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 20px;
+                text-decoration: none;
+                color: var(--text-primary);
+                font-size: 0.9rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                border: none;
+                background: none;
+                width: 100%;
+                text-align: left;
+                cursor: pointer;
+            }
+
+            .dropdown-item:hover {
+                background: rgba(79, 209, 199, 0.08);
+                color: var(--secondary-color);
+            }
+
+            .dropdown-item i {
+                width: 16px;
+                text-align: center;
+                color: var(--text-secondary);
+                transition: color 0.2s ease;
+            }
+
+            .dropdown-item:hover i {
+                color: var(--secondary-color);
+            }
+
+            .dropdown-divider {
+                height: 1px;
+                background: var(--border-color);
+                margin: 8px 0;
+            }
+
+            .dropdown-item.danger {
+                color: #E53E3E;
+            }
+
+            .dropdown-item.danger:hover {
+                background: rgba(229, 62, 62, 0.08);
+                color: #E53E3E;
+            }
+
+            .dropdown-item.danger:hover i {
+                color: #E53E3E;
+            }
+
+            /* Hero Section */
+            .contact-hero {
+                padding: 8rem 2rem 4rem;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .contact-hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:white;stop-opacity:0.1"/><stop offset="100%" style="stop-color:transparent;stop-opacity:0"/></radialGradient></defs><circle cx="200" cy="200" r="3" fill="url(%23grad)"/><circle cx="800" cy="300" r="2" fill="url(%23grad)"/><circle cx="400" cy="600" r="2.5" fill="url(%23grad)"/><circle cx="700" cy="800" r="2" fill="url(%23grad)"/><circle cx="300" cy="900" r="1.5" fill="url(%23grad)"/></svg>') repeat;
+                opacity: 0.6;
+                animation: float 20s ease-in-out infinite;
+            }
+
+            @keyframes float {
+                0%, 100% {
+                    transform: translateY(0px) rotate(0deg);
+                }
+                50% {
+                    transform: translateY(-20px) rotate(180deg);
+                }
+            }
+
+            .hero-content {
+                max-width: 800px;
+                margin: 0 auto;
+                position: relative;
+                z-index: 2;
+            }
+
+            .hero-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50px;
+                padding: 0.5rem 1rem;
+                margin-bottom: 2rem;
+                color: white;
+                font-size: 0.85rem;
+                font-weight: 500;
+            }
+
+            .hero-title {
+                font-family: 'Playfair Display', serif;
+                font-size: clamp(3rem, 6vw, 4.5rem);
+                font-weight: 700;
+                line-height: 1.1;
+                margin-bottom: 1.5rem;
+                color: white;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .hero-subtitle {
+                font-size: 1.25rem;
+                color: rgba(255, 255, 255, 0.9);
+                margin-bottom: 2.5rem;
+                line-height: 1.6;
+                font-weight: 400;
+            }
+
+            /* Main Content */
+            .main-content {
+                background: var(--bg-light);
+                position: relative;
+                z-index: 10;
+                margin-top: -100px;
+                border-radius: 50px 50px 0 0;
+                padding: 6rem 2rem 4rem;
+            }
+
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            /* Contact Section */
+            .contact-section {
+                background: linear-gradient(135deg, rgba(79, 209, 199, 0.05), rgba(240, 147, 251, 0.05));
+                border-radius: 30px;
+                padding: 4rem;
+                position: relative;
+                overflow: hidden;
+                margin-bottom: 4rem;
+            }
+
+            .contact-container {
+                display: grid;
+                grid-template-columns: 1fr 1.2fr;
+                gap: 4rem;
+                align-items: start;
+            }
+
+            .contact-info {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .contact-card {
+                background: white;
+                border-radius: 20px;
+                padding: 2rem;
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                box-shadow: var(--shadow-sm);
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+
+            .contact-card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--shadow-lg);
+                border-color: var(--secondary-color);
+            }
+
+            .contact-icon {
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                border-radius: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.5rem;
+                flex-shrink: 0;
+            }
+
+            .contact-details h3 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+            }
+
+            .contact-details p {
+                color: var(--text-secondary);
+                line-height: 1.5;
+                margin: 0;
+            }
+
+            .contact-form-container {
+                background: white;
+                border-radius: 25px;
+                padding: 3rem;
+                box-shadow: var(--shadow-lg);
+                position: relative;
+            }
+
+            .contact-form {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .form-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .form-group label {
+                font-weight: 600;
+                color: var(--primary-color);
+                font-size: 0.9rem;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                background: var(--bg-light);
+                border: 2px solid var(--border-color);
+                border-radius: 12px;
+                padding: 1rem;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+                outline: none;
+                font-family: inherit;
+            }
+
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                border-color: var(--secondary-color);
+                background: white;
+                box-shadow: 0 0 0 4px rgba(79, 209, 199, 0.1);
+            }
+
+            .form-group textarea {
+                resize: vertical;
+                min-height: 120px;
+            }
+
+            .submit-btn {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                color: white;
+                border: none;
+                border-radius: 15px;
+                padding: 1.2rem 2rem;
+                font-size: 1.1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(79, 209, 199, 0.4);
+            }
+
+            .submit-btn::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                transition: all 0.3s ease;
+            }
+
+            .submit-btn:hover::before {
+                width: 300px;
+                height: 300px;
+            }
+
+            /* Map Section */
+            .map-section {
+                background: white;
+                border-radius: 30px;
+                padding: 3rem;
+                box-shadow: var(--shadow-lg);
+                margin-bottom: 4rem;
+            }
+
+            .map-container {
+                width: 100%;
+                height: 400px;
+                border-radius: 20px;
+                overflow: hidden;
+                border: 2px solid var(--border-color);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.2rem;
+                position: relative;
+            }
+
+            .map-placeholder {
+                text-align: center;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 2rem;
+            }
+
+            /* FAQ Section */
+            .faq-section {
+                background: white;
+                border-radius: 30px;
+                padding: 4rem;
+                box-shadow: var(--shadow-lg);
+                margin-bottom: 4rem;
+            }
+
+            .section-header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            .section-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 25px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            .section-title {
+                font-family: 'Playfair Display', serif;
+                font-size: clamp(2.5rem, 4vw, 3.5rem);
+                font-weight: 700;
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+                line-height: 1.2;
+            }
+
+            .section-subtitle {
+                font-size: 1.1rem;
+                color: var(--text-secondary);
+                max-width: 600px;
+                margin: 0 auto;
+                line-height: 1.6;
+            }
+
+            .faq-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .faq-item {
+                background: var(--bg-light);
+                border-radius: 15px;
+                padding: 1.5rem;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                border: 2px solid transparent;
+            }
+
+            .faq-item:hover {
+                background: white;
+                box-shadow: var(--shadow-md);
+                border-color: var(--secondary-color);
+            }
+
+            .faq-question {
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .faq-answer {
+                color: var(--text-secondary);
+                line-height: 1.6;
+            }
+
+            /* Footer */
+            .footer {
+                background: linear-gradient(135deg, var(--primary-color), #1a202c);
+                color: white;
+                padding: 4rem 2rem 2rem;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .footer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:white;stop-opacity:0.03"/><stop offset="100%" style="stop-color:transparent;stop-opacity:0"/></radialGradient></defs><circle cx="100" cy="100" r="2" fill="url(%23grad)"/><circle cx="900" cy="200" r="1.5" fill="url(%23grad)"/><circle cx="300" cy="800" r="2.5" fill="url(%23grad)"/><circle cx="700" cy="600" r="2" fill="url(%23grad)"/></svg>') repeat;
+                opacity: 0.8;
+            }
+
+            .footer-content {
+                max-width: 1400px;
+                margin: 0 auto;
+                position: relative;
+                z-index: 2;
+            }
+
+            .footer-main {
+                display: grid;
+                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+                gap: 3rem;
+                margin-bottom: 3rem;
+            }
+
+            .footer-brand {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .footer-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 700;
+                color: white;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .footer-logo i {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2.5rem;
+            }
+
+            .footer-desc {
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.6;
+                max-width: 300px;
+            }
+
+            .social-links {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .social-link:hover {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(79, 209, 199, 0.3);
+            }
+
+            .footer-section h3 {
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                color: white;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .footer-links a {
+                color: rgba(255, 255, 255, 0.7);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
+            }
+
+            .footer-links a:hover {
+                color: var(--secondary-color);
+                transform: translateX(5px);
+            }
+
+            .footer-bottom {
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding-top: 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .footer-bottom p {
+                color: rgba(255, 255, 255, 0.6);
+                margin: 0;
+            }
+
+            .footer-bottom-links {
+                display: flex;
+                gap: 2rem;
+            }
+
+            .footer-bottom-links a {
+                color: rgba(255, 255, 255, 0.6);
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: color 0.3s ease;
+            }
+
+            .footer-bottom-links a:hover {
+                color: var(--secondary-color);
+            }
+
+            /* Mobile Responsive */
+            @media (max-width: 1024px) {
+                .contact-container {
+                    grid-template-columns: 1fr;
+                    gap: 3rem;
+                }
+
+                .footer-main {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 2rem;
+                }
+
+                .faq-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .nav-container {
+                    padding: 0 1rem;
+                    height: 70px;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                }
+
+                .logo {
+                    font-size: 1.5rem;
+                }
+
+                .nav-menu {
+                    display: none;
+                }
+
+                .contact-hero {
+                    padding: 6rem 1rem 3rem;
+                }
+
+                .main-content {
+                    padding: 4rem 1rem 3rem;
+                    margin-top: -50px;
+                }
+
+                .contact-section {
+                    padding: 3rem 2rem;
+                }
+
+                .contact-form-container {
+                    padding: 2rem;
+                }
+
+                .form-row {
+                    grid-template-columns: 1fr;
+                }
+
+                .contact-card {
+                    padding: 1.5rem;
+                    flex-direction: column;
+                    text-align: center;
+                    gap: 1rem;
+                }
+
+                .contact-icon {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .map-section {
+                    padding: 2rem;
+                }
+
+                .map-container {
+                    height: 300px;
+                }
+
+                .faq-section {
+                    padding: 3rem 2rem;
+                }
+
+                .footer {
+                    padding: 3rem 1rem 2rem;
+                }
+
+                .footer-main {
+                    grid-template-columns: 1fr;
+                    gap: 2rem;
+                    text-align: center;
+                }
+
+                .footer-brand {
+                    align-items: center;
+                }
+
+                .footer-bottom {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .footer-bottom-links {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .contact-section {
+                    padding: 2rem 1rem;
+                }
+
+                .contact-form-container {
+                    padding: 1.5rem;
+                }
+
+                .social-links {
+                    justify-content: center;
+                }
+
+                .faq-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .faq-item {
+                    padding: 1rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <!--header and nav bar load in content jsfile-->
+        </nav>
+        <!-- Navigation -->
+
+
+        <!-- Hero Section -->
+        <section class="contact-hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-envelope"></i>
+                    Get in Touch
+                </div>
+
+                <h1 class="hero-title">
+                    Let's Create Something<br>
+                    <span style="background: linear-gradient(45deg, #F093FB, #F5576C); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Beautiful Together</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Have a special occasion or custom request? We'd love to help you create the perfect floral arrangement that brings your vision to life.
+                </p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Contact Section -->
+                <section class="contact-section">
+                    <div class="contact-container">
+                        <div class="contact-info">
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h3>Visit Our Store</h3>
+                                    <p>123 Flower Street,<br>Kandy, Sri Lanaka<br></p>
+                                </div>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h3>Call Us</h3>
+                                    <p>+94 74025 9085<br>Mon-Sun: 8AM - 10PM</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h3>Email Us</h3>
+                                    <p>hello@bloomblossom.com<br>support@bloomblossom.com</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h3>Business Hours</h3>
+                                    <p>Monday - Sunday<br>8:00 AM - 10:00 PM<br></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-form-container">
+                            <form class="contact-form" onsubmit="submitContactForm(event)">
+                                <div class="form-group">
+                                    <label for="name">Full Name</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input type="tel" id="phone" name="phone" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="occasion">Occasion</label>
+                                    <select id="occasion" name="occasion" required>
+                                        <option value="">Select an occasion</option>
+                                        <option value="birthday">Birthday</option>
+                                        <option value="anniversary">Anniversary</option>
+                                        <option value="wedding">Wedding</option>
+                                        <option value="valentine">Valentine's Day</option>
+                                        <option value="mothers-day">Mother's Day</option>
+                                        <option value="graduation">Graduation</option>
+                                        <option value="sympathy">Sympathy</option>
+                                        <option value="congratulations">Congratulations</option>
+                                        <option value="just-because">Just Because</option>
+                                        <option value="corporate">Corporate Event</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="budget">Budget Range</label>
+                                        <select id="budget" name="budget" required>
+                                            <option value="">Select budget range</option>
+                                            <option value="under-1000">Under ₹1,000</option>
+                                            <option value="1000-2500">₹1,000 - ₹2,500</option>
+                                            <option value="2500-5000">₹2,500 - ₹5,000</option>
+                                            <option value="5000-10000">₹5,000 - ₹10,000</option>
+                                            <option value="above-10000">Above ₹10,000</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="delivery-date">Preferred Delivery Date</label>
+                                        <input type="date" id="delivery-date" name="delivery-date" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="message">Your Message</label>
+                                    <textarea id="message" name="message" rows="5" placeholder="Tell us about your requirements, preferred colors, flower types, delivery instructions, or any special requests..." required></textarea>
+                                </div>
+
+                                <button type="submit" class="submit-btn">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Map Section -->
+                <section class="map-section">
+                    <div class="section-header">
+                        <div class="section-badge">
+                            <i class="fas fa-map"></i>
+                            Find Us
+                        </div>
+                        <h2 class="section-title">Visit Our Beautiful Store</h2>
+                        <p class="section-subtitle">
+                            Come visit our flower shop and experience the beauty of fresh blooms in person
+                        </p>
+                    </div>
+
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            <i class="fas fa-map-marker-alt" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                            <p>Interactive Map Coming Soon</p>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">123 Flower Street, Kandy District, Sri Lanka</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section class="faq-section">
+                    <div class="section-header">
+                        <div class="section-badge">
+                            <i class="fas fa-question-circle"></i>
+                            FAQ
+                        </div>
+                        <h2 class="section-title">Frequently Asked Questions</h2>
+                        <p class="section-subtitle">
+                            Find answers to common questions about our flowers, delivery, and services
+                        </p>
+                    </div>
+
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <i class="fas fa-truck"></i>
+                                Do you offer same-day delivery?
+                            </div>
+                            <div class="faq-answer">
+                                Yes! We offer same-day delivery for orders placed before 2 PM. We cover all major areas in Mumbai and surrounding regions.
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <i class="fas fa-leaf"></i>
+                                How fresh are your flowers?
+                            </div>
+                            <div class="faq-answer">
+                                Our flowers are hand-picked daily from our partner farms and stored in climate-controlled environments. We guarantee 7-day freshness.
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <i class="fas fa-heart"></i>
+                                Can you create custom arrangements?
+                            </div>
+                            <div class="faq-answer">
+                                Absolutely! Our expert florists love creating custom arrangements. Contact us with your vision and we'll bring it to life.
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <i class="fas fa-credit-card"></i>
+                                What payment methods do you accept?
+                            </div>
+                            <div class="faq-answer">
+                                We accept all major credit cards, debit cards, UPI payments, net banking, and cash on delivery for your convenience.
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <i class="fas fa-undo-alt"></i>
+                                What is your return policy?
+                            </div>
+                            <div class="faq-answer">
+                                We offer a 100% satisfaction guarantee. If you're not completely happy with your flowers, contact us within 24 hours for a replacement or refund.
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <i class="fas fa-calendar"></i>
+                                How far in advance can I place an order?
+                            </div>
+                            <div class="faq-answer">
+                                You can place orders up to 30 days in advance. For special occasions like weddings, we recommend booking 2-4 weeks ahead.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <!--footer session load in content load jsfile-->
+        </footer>
+        <!-- Footer -->
+
+        <!-- JavaScript -->
+        <script>
+            // Contact form submission
+            function submitContactForm(event) {
+                event.preventDefault();
+
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+
+                // Show loading state
+                const submitBtn = event.target.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
+
+                // Simulate form submission (replace with actual API call)
+                setTimeout(() => {
+                    // Reset form
+                    event.target.reset();
+
+                    // Show success message
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                    submitBtn.style.background = 'linear-gradient(45deg, #10B981, #059669)';
+
+                    // Show notification
+                    showNotification('Thank you! Your message has been sent successfully. We\'ll get back to you soon! 💐', 'success');
+
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.background = 'linear-gradient(45deg, var(--secondary-color), var(--accent-color))';
+                    }, 3000);
+                }, 2000);
+            }
+
+            // Utility function for notifications
+            function showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+
+                const colors = {
+                    success: 'linear-gradient(45deg, #10B981, #059669)',
+                    error: 'linear-gradient(45deg, #EF4444, #DC2626)',
+                    info: 'linear-gradient(45deg, #3B82F6, #2563EB)'
+                };
+
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: ${colors[type]};
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                    z-index: 10000;
+                    max-width: 350px;
+                    font-weight: 500;
+                    transform: translateX(400px);
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(10px);
+                `;
+
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+
+                // Remove after 5 seconds
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(400px)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 5000);
+            }
+
+            // Cart functionality placeholder
+            function toggleCart() {
+                showNotification('Cart functionality available on the main page! 🛒', 'info');
+            }
+
+            // User dropdown functionality
+            function toggleUserDropdown() {
+                const dropdown = document.getElementById('userDropdown');
+                const userBtn = document.getElementById('userBtn');
+
+                dropdown.classList.toggle('show');
+                userBtn.classList.toggle('active');
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                const dropdown = document.getElementById('userDropdown');
+                const userBtn = document.getElementById('userBtn');
+
+                if (!userBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.remove('show');
+                    userBtn.classList.remove('active');
+                }
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.querySelector('.navbar');
+                const currentScroll = window.pageYOffset;
+
+                if (currentScroll > 100) {
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                    navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+                } else {
+                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    navbar.style.boxShadow = 'none';
+                }
+            });
+
+            // Initialize page
+            document.addEventListener('DOMContentLoaded', function () {
+                // Set minimum date for delivery date input
+                const deliveryDateInput = document.getElementById('delivery-date');
+                const today = new Date().toISOString().split('T')[0];
+                deliveryDateInput.min = today;
+
+                // Welcome message
+                setTimeout(() => {
+                    showNotification('Welcome to our Contact page! We\'d love to hear from you 💬', 'info');
+                }, 1000);
+
+                console.log('✅ Contact page loaded successfully!');
+            });
+        </script>
+
+        <script src="assets/js/content-loader.js"></script>
+
+        <script src="assets/js/sign-out.js"></script>
+    </body>
+</html>

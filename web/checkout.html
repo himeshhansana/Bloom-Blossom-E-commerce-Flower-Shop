@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Checkout - Bloom & Blossom</title>
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/flowerlogo.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+            rel="stylesheet">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+
+        <style>
+            :root {
+                --primary-color: #2D3748;
+                --secondary-color: #4FD1C7;
+                --accent-color: #F093FB;
+                --text-primary: #2D3748;
+                --text-secondary: #718096;
+                --bg-light: #F7FAFC;
+                --bg-white: #FFFFFF;
+                --border-color: #E2E8F0;
+                --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #00f2fe 100%);
+                min-height: 100vh;
+                line-height: 1.6;
+                color: var(--text-primary);
+            }
+
+            /* Navigation */
+            .navbar {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                transition: all 0.3s ease;
+            }
+
+            .nav-container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 0 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 80px;
+            }
+
+            .logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .logo i {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2.5rem;
+            }
+
+            .nav-menu {
+                display: flex;
+                list-style: none;
+                gap: 2.5rem;
+                align-items: center;
+            }
+
+            .nav-menu a {
+                text-decoration: none;
+                color: var(--text-primary);
+                font-weight: 500;
+                font-size: 0.95rem;
+                position: relative;
+                transition: all 0.3s ease;
+                padding: 0.5rem 0;
+            }
+
+            .nav-menu a::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                transition: width 0.3s ease;
+            }
+
+            .nav-menu a:hover::after {
+                width: 100%;
+            }
+
+            .nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+            }
+
+            .search-container {
+                position: relative;
+            }
+
+            .search-box {
+                background: rgba(247, 250, 252, 0.9);
+                border: 2px solid var(--border-color);
+                border-radius: 50px;
+                padding: 0.75rem 1.5rem;
+                width: 280px;
+                outline: none;
+                transition: all 0.3s ease;
+                font-size: 0.9rem;
+            }
+
+            .search-box:focus {
+                border-color: var(--secondary-color);
+                background: white;
+                box-shadow: 0 0 0 4px rgba(79, 209, 199, 0.1);
+            }
+
+            .search-icon {
+                position: absolute;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-secondary);
+                pointer-events: none;
+            }
+
+            .cart-btn {
+                position: relative;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0.75rem;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+                font-size: 1.2rem;
+            }
+
+            .cart-btn:hover {
+                background: rgba(79, 209, 199, 0.1);
+                transform: translateY(-2px);
+            }
+
+            .cart-count {
+                position: absolute;
+                top: 0.25rem;
+                right: 0.25rem;
+                background: linear-gradient(45deg, #F093FB, #F5576C);
+                color: white;
+                border-radius: 50%;
+                width: 1.25rem;
+                height: 1.25rem;
+                font-size: 0.7rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+            }
+
+            .user-dropdown {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+
+            .user-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0.75rem;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 45px;
+                height: 45px;
+                background: rgba(79, 209, 199, 0.1);
+                border: 2px solid transparent;
+            }
+
+            .user-btn:hover {
+                background: rgba(79, 209, 199, 0.2);
+                transform: translateY(-2px);
+                border-color: var(--secondary-color);
+                box-shadow: 0 4px 12px rgba(79, 209, 199, 0.3);
+            }
+
+            .user-btn.active {
+                background: var(--secondary-color);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(79, 209, 199, 0.4);
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: calc(100% + 10px);
+                right: 0;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                border: 1px solid var(--border-color);
+                min-width: 220px;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+            }
+
+            .dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .dropdown-header {
+                padding: 1.5rem 1.5rem 1rem;
+                border-bottom: 1px solid var(--border-color);
+                text-align: center;
+            }
+
+            .dropdown-header h4 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--text-primary);
+                margin-bottom: 0.25rem;
+            }
+
+            .dropdown-header p {
+                font-size: 0.8rem;
+                color: var(--text-secondary);
+            }
+
+            .dropdown-content {
+                padding: 0.5rem 0;
+            }
+
+            .dropdown-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.75rem 1.5rem;
+                text-decoration: none;
+                color: var(--text-primary);
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+            }
+
+            .dropdown-item:hover {
+                background: rgba(79, 209, 199, 0.1);
+                color: var(--secondary-color);
+            }
+
+            .dropdown-item.danger:hover {
+                background: rgba(245, 87, 108, 0.1);
+                color: #F5576C;
+            }
+
+            .dropdown-divider {
+                height: 1px;
+                background: var(--border-color);
+                margin: 0.5rem 0;
+            }
+
+            /* Main Content */
+            .main-wrapper {
+                margin-top: 80px;
+                padding: 2rem 0;
+            }
+
+            .axil-section-gap {
+                padding: 60px 0;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            /* Checkout Styles */
+            .axil-checkout-area {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 20px;
+                margin: 2rem auto;
+                padding: 3rem;
+                box-shadow: var(--shadow-xl);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .axil-checkout-billing {
+                background: white;
+                padding: 2rem;
+                border-radius: 15px;
+                box-shadow: var(--shadow-md);
+                border: 1px solid var(--border-color);
+            }
+
+            .axil-checkout-billing h4.title {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 2rem;
+                position: relative;
+            }
+
+            .axil-checkout-billing h4.title::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                width: 50px;
+                height: 3px;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                border-radius: 2px;
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+
+            .form-group label span {
+                color: #F5576C;
+            }
+
+            .form-group input[type="text"],
+            .form-group select {
+                width: 100%;
+                padding: 0.875rem 1rem;
+                border: 2px solid var(--border-color);
+                border-radius: 10px;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+                background: white;
+            }
+
+            .form-group input[type="text"]:focus,
+            .form-group select:focus {
+                outline: none;
+                border-color: var(--secondary-color);
+                box-shadow: 0 0 0 4px rgba(79, 209, 199, 0.1);
+            }
+
+            .input-group {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .input-group input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                accent-color: var(--secondary-color);
+            }
+
+            .input-group label {
+                margin-bottom: 0;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            }
+
+            /* Order Summary */
+            .axil-order-summery {
+                background: white;
+                padding: 2rem;
+                border-radius: 15px;
+                box-shadow: var(--shadow-md);
+                border: 1px solid var(--border-color);
+                position: sticky;
+                top: 100px;
+            }
+
+            .axil-order-summery h5.title {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 1.5rem;
+                position: relative;
+            }
+
+            .axil-order-summery h5.title::after {
+                content: '';
+                position: absolute;
+                bottom: -8px;
+                left: 0;
+                width: 40px;
+                height: 2px;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                border-radius: 2px;
+            }
+
+            .summery-table-wrap {
+                margin-bottom: 2rem;
+            }
+
+            .summery-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .summery-table thead th {
+                padding: 1rem 0;
+                border-bottom: 2px solid var(--border-color);
+                font-weight: 600;
+                color: var(--text-primary);
+                text-align: left;
+            }
+
+            .summery-table tbody td {
+                padding: 1rem 0;
+                border-bottom: 1px solid var(--border-color);
+                color: var(--text-secondary);
+            }
+
+            .summery-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .order-product td:first-child {
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+
+            .order-subtotal,
+            .order-total {
+                font-weight: 600;
+            }
+
+            .order-total {
+                font-size: 1.1rem;
+                color: var(--primary-color);
+            }
+
+            .order-total-amount {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--secondary-color);
+            }
+
+            .shipping-amount {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .shipping-amount .title {
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+
+            .shipping-amount .amount {
+                font-weight: 600;
+                color: var(--text-secondary);
+            }
+
+            /* Payment Method */
+            .order-payment-method {
+                margin-bottom: 2rem;
+            }
+
+            .single-payment {
+                border: 2px solid var(--border-color);
+                border-radius: 10px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .single-payment:hover {
+                border-color: var(--secondary-color);
+                box-shadow: 0 0 0 4px rgba(79, 209, 199, 0.1);
+            }
+
+            .single-payment .input-group {
+                margin-bottom: 0.5rem;
+            }
+
+            .single-payment input[type="radio"] {
+                width: 18px;
+                height: 18px;
+                accent-color: var(--secondary-color);
+            }
+
+            .single-payment label {
+                font-weight: 600;
+                color: var(--text-primary);
+                font-size: 1rem;
+            }
+
+            .single-payment img {
+                height: 24px;
+                margin-left: 0.5rem;
+            }
+
+            .single-payment p {
+                color: var(--text-secondary);
+                font-size: 0.9rem;
+                margin: 0;
+            }
+
+            /* Checkout Button */
+            .checkout-btn {
+                width: 100%;
+                padding: 1rem 2rem;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .checkout-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(79, 209, 199, 0.4);
+            }
+
+            .checkout-btn:active {
+                transform: translateY(0);
+            }
+
+            /* Footer */
+            .footer {
+                background: linear-gradient(135deg, var(--primary-color) 0%, #1A202C 100%);
+                color: white;
+                position: relative;
+                margin-top: 4rem;
+            }
+
+            .footer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            }
+
+            .footer-content {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 3rem 2rem 1rem;
+            }
+
+            .footer-main {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+                gap: 3rem;
+                margin-bottom: 2rem;
+            }
+
+            .footer-brand {
+                max-width: 350px;
+            }
+
+            .footer-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.75rem;
+                font-weight: 700;
+                color: white;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .footer-logo i {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2rem;
+            }
+
+            .footer-desc {
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+            }
+
+            .social-links {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .social-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                color: white;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            .social-link:hover {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(79, 209, 199, 0.3);
+            }
+
+            .footer-section h3 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                color: white;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .footer-links a {
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            .footer-links a:hover {
+                color: var(--secondary-color);
+            }
+
+            .footer-bottom {
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1.5rem 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .footer-bottom p {
+                color: rgba(255, 255, 255, 0.7);
+                margin: 0;
+            }
+
+            .footer-bottom-links {
+                display: flex;
+                gap: 2rem;
+            }
+
+            .footer-bottom-links a {
+                color: rgba(255, 255, 255, 0.7);
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: color 0.3s ease;
+            }
+
+            .footer-bottom-links a:hover {
+                color: var(--secondary-color);
+            }
+
+            /* Grid System for Responsive Layout */
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0 -15px;
+            }
+
+            .col-lg-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+                padding: 0 15px;
+            }
+
+            /* Mobile Navigation Toggle */
+            .mobile-nav-toggle {
+                display: none;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--text-primary);
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-nav-toggle:hover {
+                background: rgba(79, 209, 199, 0.1);
+            }
+
+            .nav-menu.mobile-open {
+                display: flex;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                z-index: 999;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .nav-menu.mobile-open a {
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            }
+
+            .nav-menu.mobile-open a:last-child {
+                border-bottom: none;
+            }
+
+            /* Enhanced Responsive Design */
+            @media (max-width: 1200px) {
+                .container {
+                    max-width: 1000px;
+                    padding: 0 15px;
+                }
+
+                .axil-checkout-area {
+                    padding: 2.5rem;
+                    margin: 1.5rem auto;
+                }
+
+                .nav-container {
+                    max-width: 1000px;
+                    padding: 0 1.5rem;
+                }
+            }
+
+            @media (max-width: 991px) {
+                .col-lg-6 {
+                    flex: 0 0 100%;
+                    max-width: 100%;
+                    margin-bottom: 2rem;
+                }
+
+                .col-lg-6:last-child {
+                    margin-bottom: 0;
+                }
+
+                .axil-order-summery {
+                    position: static;
+                    margin-top: 0;
+                }
+
+                .footer-main {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 2.5rem;
+                }
+
+                .axil-checkout-area {
+                    padding: 2rem;
+                }
+
+                .search-box {
+                    width: 220px;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .nav-container {
+                    padding: 0 1rem;
+                    height: 70px;
+                }
+
+                .logo {
+                    font-size: 1.75rem;
+                }
+
+                .logo i {
+                    font-size: 2rem;
+                }
+
+                .main-wrapper {
+                    margin-top: 70px;
+                }
+
+                .search-container {
+                    display: none;
+                }
+
+                .nav-menu {
+                    display: none;
+                }
+
+                .mobile-nav-toggle {
+                    display: block;
+                }
+
+                .nav-actions {
+                    gap: 1rem;
+                }
+
+                .container {
+                    padding: 0 1rem;
+                }
+
+                .axil-checkout-area {
+                    margin: 1rem;
+                    padding: 1.5rem;
+                    border-radius: 16px;
+                }
+
+                .axil-checkout-billing,
+                .axil-order-summery {
+                    padding: 1.5rem;
+                    border-radius: 16px;
+                }
+
+                .axil-checkout-billing h4.title,
+                .axil-order-summery h5.title {
+                    font-size: 1.25rem;
+                    margin-bottom: 1.5rem;
+                }
+
+                .form-group {
+                    margin-bottom: 1.25rem;
+                }
+
+                .form-group input[type="text"],
+                .form-group select {
+                    padding: 0.875rem 1rem;
+                    font-size: 0.9rem;
+                }
+
+                .checkout-btn {
+                    padding: 1rem 1.5rem;
+                    font-size: 0.95rem;
+                }
+
+                .footer-main {
+                    grid-template-columns: 1fr;
+                    gap: 2rem;
+                }
+
+                .footer-bottom {
+                    flex-direction: column;
+                    text-align: center;
+                    gap: 1rem;
+                }
+
+                .footer-bottom-links {
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                }
+
+                .row {
+                    margin: 0;
+                }
+
+                .col-lg-6 {
+                    padding: 0;
+                    margin-bottom: 1.5rem;
+                }
+
+                .summery-table thead th,
+                .summery-table tbody td {
+                    padding: 0.75rem 0;
+                    font-size: 0.9rem;
+                }
+
+                .single-payment {
+                    padding: 1.25rem;
+                }
+
+                .dropdown-menu {
+                    min-width: 200px;
+                    right: -10px;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .nav-container {
+                    height: 65px;
+                    padding: 0 0.75rem;
+                }
+
+                .logo {
+                    font-size: 1.5rem;
+                }
+
+                .logo i {
+                    font-size: 1.75rem;
+                }
+
+                .main-wrapper {
+                    margin-top: 65px;
+                }
+
+                .axil-checkout-area {
+                    margin: 0.5rem;
+                    padding: 1rem;
+                }
+
+                .axil-checkout-billing,
+                .axil-order-summery {
+                    padding: 1.25rem;
+                }
+
+                .axil-checkout-billing h4.title,
+                .axil-order-summery h5.title {
+                    font-size: 1.1rem;
+                }
+
+                .form-group {
+                    margin-bottom: 1rem;
+                }
+
+                .form-group input[type="text"],
+                .form-group select {
+                    padding: 0.75rem 0.875rem;
+                    font-size: 0.85rem;
+                }
+
+                .checkout-btn {
+                    padding: 0.875rem 1.25rem;
+                    font-size: 0.9rem;
+                }
+
+                .footer-content {
+                    padding: 2rem 1rem 1rem;
+                }
+
+                .footer-brand {
+                    max-width: 100%;
+                }
+
+                .footer-logo {
+                    font-size: 1.5rem;
+                }
+
+                .cart-btn,
+                .user-btn {
+                    padding: 0.5rem;
+                    width: 40px;
+                    height: 40px;
+                }
+
+                .cart-count {
+                    width: 1rem;
+                    height: 1rem;
+                    font-size: 0.6rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .axil-checkout-billing h4.title::after,
+                .axil-order-summery h5.title::after {
+                    width: 25px;
+                    height: 2px;
+                }
+
+                .form-group label {
+                    font-size: 0.9rem;
+                    margin-bottom: 0.375rem;
+                }
+
+                .input-group label {
+                    font-size: 0.85rem;
+                }
+
+                .summery-table thead th,
+                .summery-table tbody td {
+                    padding: 0.5rem 0;
+                    font-size: 0.85rem;
+                }
+
+                .single-payment {
+                    padding: 1rem;
+                }
+
+                .single-payment label {
+                    font-size: 0.9rem;
+                }
+
+                .single-payment p {
+                    font-size: 0.8rem;
+                }
+
+                .checkout-btn {
+                    padding: 0.75rem 1rem;
+                    font-size: 0.85rem;
+                    letter-spacing: 0.3px;
+                }
+
+                .dropdown-menu {
+                    min-width: 180px;
+                    right: -15px;
+                }
+
+                .dropdown-item {
+                    padding: 0.625rem 1.25rem;
+                    font-size: 0.85rem;
+                }
+
+                .nav-menu.mobile-open {
+                    padding: 1.5rem;
+                }
+
+                .nav-menu.mobile-open a {
+                    padding: 0.875rem 0;
+                    font-size: 0.9rem;
+                }
+            }
+
+            @media (max-width: 375px) {
+                .axil-checkout-area {
+                    margin: 0.25rem;
+                    padding: 0.75rem;
+                }
+
+                .axil-checkout-billing,
+                .axil-order-summery {
+                    padding: 1rem;
+                }
+
+                .form-group input[type="text"],
+                .form-group select {
+                    padding: 0.625rem 0.75rem;
+                }
+
+                .checkout-btn {
+                    padding: 0.625rem 0.875rem;
+                    font-size: 0.8rem;
+                }
+            }
+
+            /* Enhanced Mobile Interactions */
+            @media (hover: none) and (pointer: coarse) {
+                .nav-menu a:hover::after,
+                .cart-btn:hover,
+                .user-btn:hover,
+                .single-payment:hover,
+                .checkout-btn:hover {
+                    transform: none;
+                }
+
+                .cart-btn:active,
+                .user-btn:active {
+                    transform: scale(0.95);
+                }
+
+                .checkout-btn:active {
+                    transform: scale(0.98);
+                }
+            }
+
+            /* Landscape orientation adjustments */
+            @media (max-height: 500px) and (orientation: landscape) {
+                .axil-section-gap {
+                    padding: 40px 0;
+                }
+
+                .axil-checkout-area {
+                    padding: 1.5rem;
+                }
+
+                .axil-checkout-billing,
+                .axil-order-summery {
+                    padding: 1.25rem;
+                }
+            }
+        </style>
+    </head>
+
+    <body class="sticky-header" onload="loadCheckoutData();">
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+        <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
+
+        <!-- Start Header -->
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <!--header and nav bar load in content jsfile-->
+        </nav>
+        <!-- Navigation -->
+
+        <!-- End Header -->
+
+        <main class="main-wrapper">
+            <!-- Start Checkout Area  -->
+            <div class="axil-checkout-area axil-section-gap">
+                <div class="container">
+                    <form action="#">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="axil-checkout-billing">
+                                    <h4 class="title mb--40">Shipping Details</h4>
+
+                                    <div class="form-group input-group">
+                                        <input type="checkbox" id="checkbox1">
+                                        <label for="checkbox1">Same as your current address?</label>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>First Name <span>*</span></label>
+                                                <input type="text" id="first-name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Last Name <span>*</span></label>
+                                                <input type="text" id="last-name">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>City <span>*</span></label>
+                                        <select id="city-select">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Address Line 1 <span>*</span></label>
+                                        <input type="text" id="line-one" placeholder="House number and street name">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Address Line 2 <span>*</span></label>
+                                        <input type="text" id="line-two" placeholder="Apartment, suite, unit, etc.">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Postal Code <span>*</span></label>
+                                        <input type="text" id="postal-code">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Mobile <span>*</span></label>
+                                        <input type="text" id="mobile">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="axil-order-summery order-checkout-summery">
+                                    <h5 class="title mb--20">Your Order</h5>
+                                    <div class="summery-table-wrap">
+                                        <table class="table summery-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="st-tbody">
+                                                <tr class="order-product" id="st-item-tr">
+                                                    <td>
+                                                        <span id="st-product-title">Product-1</span> x 
+                                                        <span class="quantity" id="st-product-qty">1</span>
+                                                    </td>
+                                                    <td>Rs. <span id="st-product-price"></span></td>
+                                                </tr>
+
+                                                <tr class="order-subtotal" id="st-subtotal-tr">
+                                                    <td>Subtotal</td>
+                                                    <td>Rs. <span id="st-product-total-amount"></span></td>
+                                                </tr>
+
+                                                <tr class="order-shipping" id="st-order-shipping-tr">
+                                                    <td colspan="2">
+                                                        <div class="shipping-amount">
+                                                            <span class="title">Shipping Charges</span>
+                                                            <span class="amount">Rs. 
+                                                                <span id="st-product-shipping-charges">Test 000.00</span>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="order-total" id="st-order-total-tr">
+                                                    <td>Total</td>
+                                                    <td class="order-total-amount">Rs. 
+                                                        <span id="st-order-total-amount">Test Total</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="order-payment-method">
+                                        <div class="single-payment">
+                                            <div class="input-group justify-content-between align-items-center">
+                                                <input type="radio" id="radio6" name="payment" checked>
+                                                <label for="radio6">Visa/Master Card</label>
+                                                <div>
+                                                    <img src="./assets/images/icons/visa.png" alt="Visa">
+                                                    <img src="./assets/images/icons/mastercard.png" alt="Mastercard">
+                                                </div>
+                                            </div>
+                                            <p>You can pay with your credit or debit card.</p>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="axil-btn btn-bg-primary checkout-btn" onclick="checkout();">Process to Checkout</button>
+                                    <br/>
+                                    <br/>
+                                    <button type="button" class="axil-btn btn-bg-primary checkout-btn" onclick="printinvoice();">printinvoice</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- End Checkout Area  -->
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <!--footer session load in content load jsfile-->
+        </footer>
+        <!-- Footer -->
+
+        <!-- JavaScript -->
+        <script src="assets/js/main.js"></script>
+        <script>
+                                        // Enhanced Cart System - Basic implementation for checkout
+                                        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                                        // Mobile Navigation Toggle
+                                        function toggleMobileMenu() {
+                                            const navMenu = document.getElementById('navMenu');
+                                            const mobileToggle = document.getElementById('mobileToggle');
+                                            const icon = mobileToggle.querySelector('i');
+
+                                            navMenu.classList.toggle('mobile-open');
+
+                                            if (navMenu.classList.contains('mobile-open')) {
+                                                icon.className = 'fas fa-times';
+                                                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                                            } else {
+                                                icon.className = 'fas fa-bars';
+                                                document.body.style.overflow = '';
+                                            }
+                                        }
+
+                                        // Close mobile menu when clicking on a link
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const navLinks = document.querySelectorAll('.nav-menu a');
+                                            navLinks.forEach(link => {
+                                                link.addEventListener('click', () => {
+                                                    const navMenu = document.getElementById('navMenu');
+                                                    const mobileToggle = document.getElementById('mobileToggle');
+                                                    const icon = mobileToggle.querySelector('i');
+
+                                                    navMenu.classList.remove('mobile-open');
+                                                    icon.className = 'fas fa-bars';
+                                                    document.body.style.overflow = '';
+                                                });
+                                            });
+                                        });
+
+                                        // Enhanced form validation with mobile-friendly feedback
+                                        function validateForm() {
+                                            const fields = {
+                                                'first-name': 'First Name',
+                                                'last-name': 'Last Name',
+                                                'city-select': 'City',
+                                                'line-one': 'Address Line 1',
+                                                'postal-code': 'Postal Code',
+                                                'mobile': 'Mobile Number'
+                                            };
+
+                                            let isValid = true;
+                                            let firstErrorField = null;
+
+                                            // Remove previous error states
+                                            Object.keys(fields).forEach(fieldId => {
+                                                const field = document.getElementById(fieldId);
+                                                field.style.borderColor = '';
+                                                field.style.boxShadow = '';
+                                            });
+
+                                            // Validate each field
+                                            Object.entries(fields).forEach(([fieldId, fieldName]) => {
+                                                const field = document.getElementById(fieldId);
+                                                const value = field.value.trim();
+
+                                                if (!value || (fieldId === 'city-select' && value === '0')) {
+                                                    field.style.borderColor = '#F5576C';
+                                                    field.style.boxShadow = '0 0 0 3px rgba(245, 87, 108, 0.1)';
+                                                    isValid = false;
+
+                                                    if (!firstErrorField) {
+                                                        firstErrorField = field;
+                                                    }
+                                            }
+                                            });
+
+                                            // Special validation for mobile number
+                                            const mobileField = document.getElementById('mobile');
+                                            const mobileRegex = /^(\+92|0)?[3][0-9]{9}$/;
+
+                                            if (mobileField.value && !mobileRegex.test(mobileField.value)) {
+                                                mobileField.style.borderColor = '#F5576C';
+                                                mobileField.style.boxShadow = '0 0 0 3px rgba(245, 87, 108, 0.1)';
+                                                isValid = false;
+
+                                                if (!firstErrorField) {
+                                                    firstErrorField = mobileField;
+                                                }
+                                            }
+
+                                            if (!isValid && firstErrorField) {
+                                                firstErrorField.focus();
+                                                firstErrorField.scrollIntoView({
+                                                    behavior: 'smooth',
+                                                    block: 'center',
+                                                    inline: 'nearest'
+                                                });
+                                            }
+
+                                            return isValid;
+                                        }
+
+                                        // Mobile-friendly toast notification
+                                        function showMobileToast(message, type = 'error') {
+                                            // Remove existing toasts
+                                            const existingToasts = document.querySelectorAll('.mobile-toast');
+                                            existingToasts.forEach(toast => toast.remove());
+
+                                            const toast = document.createElement('div');
+                                            toast.className = `mobile-toast mobile-toast-${type}`;
+                                            toast.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+
+                                            // Mobile-optimized toast styles
+                                            toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#4FD1C7' : '#F5576C'};
+                    color: white;
+                    padding: 1rem;
+                    border-radius: 12px;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    font-size: 0.9rem;
+                    animation: slideUp 0.3s ease-out;
+                    backdrop-filter: blur(10px);
+                `;
+
+                                            // Add slide up animation
+                                            const style = document.createElement('style');
+                                            style.textContent = `
+                    @keyframes slideUp {
+                        from { transform: translateY(100%); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                    .mobile-toast button {
+                        background: none;
+                        border: none;
+                        color: white;
+                        cursor: pointer;
+                        padding: 0.25rem;
+                        margin-left: auto;
+                        opacity: 0.8;
+                    }
+                `;
+                                            document.head.appendChild(style);
+
+                                            document.body.appendChild(toast);
+
+                                            // Auto remove after 4 seconds
+                                            setTimeout(() => {
+                                                if (toast.parentElement) {
+                                                    toast.style.animation = 'slideDown 0.3s ease-out';
+                                                    setTimeout(() => toast.remove(), 300);
+                                                }
+                                            }, 4000);
+                                        }
+
+                                        // Toggle User Dropdown
+                                        function toggleUserDropdown() {
+                                            const dropdown = document.getElementById('userDropdown');
+                                            const userBtn = document.getElementById('userBtn');
+
+                                            dropdown.classList.toggle('show');
+                                            userBtn.classList.toggle('active');
+                                        }
+
+                                        // Toggle Cart
+                                        function toggleCart() {
+                                            console.log('Cart toggled');
+                                        }
+
+                                        // Load Checkout Data with responsive considerations
+                                        function loadCheckoutData() {
+                                            // Load cart data and populate checkout form
+                                            if (cart.length > 0) {
+                                                const firstItem = cart[0];
+                                                document.getElementById('st-product-title').textContent = firstItem.name || 'Selected Product';
+                                                document.getElementById('st-product-qty').textContent = firstItem.quantity || 1;
+                                                document.getElementById('st-product-price').textContent = (firstItem.price || 25000).toLocaleString();
+
+                                                const subtotal = (firstItem.price || 25000) * (firstItem.quantity || 1);
+                                                const shipping = 1000;
+                                                const total = subtotal + shipping;
+
+                                                document.getElementById('st-product-total-amount').textContent = subtotal.toLocaleString();
+                                                document.getElementById('st-order-total-amount').textContent = total.toLocaleString();
+                                            } else {
+                                                // Default values if cart is empty
+                                                document.getElementById('st-product-title').textContent = 'Beautiful Rose Bouquet';
+                                                document.getElementById('st-product-qty').textContent = '1';
+                                                document.getElementById('st-product-price').textContent = '25,000';
+                                                document.getElementById('st-product-total-amount').textContent = '25,000';
+                                                document.getElementById('st-order-total-amount').textContent = '26,000';
+                                            }
+
+                                            // Update cart count in navigation
+                                            const cartCount = document.querySelector('.cart-count');
+                                            const totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+                                            cartCount.textContent = totalItems;
+                                            cartCount.style.opacity = totalItems > 0 ? '1' : '0';
+                                        }
+
+                                        // Enhanced Checkout Process with mobile optimization
+                                        function checkout() {
+                                            // Validate form first
+                                            if (!validateForm()) {
+                                                showMobileToast('Please fill in all required fields correctly.', 'error');
+                                                return;
+                                            }
+
+                                            // Show loading state
+                                            const checkoutBtn = document.querySelector('.checkout-btn');
+                                            const originalText = checkoutBtn.innerHTML;
+                                            checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                                            checkoutBtn.disabled = true;
+                                            checkoutBtn.style.opacity = '0.7';
+
+                                            // Simulate processing delay
+                                            setTimeout(() => {
+                                                // Get form data
+                                                const firstName = document.getElementById('first-name').value;
+                                                const lastName = document.getElementById('last-name').value;
+                                                const city = document.getElementById('city-select').value;
+                                                const addressLine1 = document.getElementById('line-one').value;
+                                                const addressLine2 = document.getElementById('line-two').value;
+                                                const postalCode = document.getElementById('postal-code').value;
+                                                const mobile = document.getElementById('mobile').value;
+
+                                                // Process checkout
+                                                const checkoutData = {
+                                                    customer: {
+                                                        firstName,
+                                                        lastName,
+                                                        mobile,
+                                                        address: {
+                                                            line1: addressLine1,
+                                                            line2: addressLine2,
+                                                            city,
+                                                            postalCode
+                                                        }
+                                                    },
+                                                    cart: cart,
+                                                    timestamp: new Date().toISOString(),
+                                                    orderNumber: 'BB' + Date.now()
+                                                };
+
+                                                // Save checkout data
+                                                localStorage.setItem('lastOrder', JSON.stringify(checkoutData));
+
+                                                // Show success message
+                                                showMobileToast(`Order ${checkoutData.orderNumber} placed successfully! 🌸`, 'success');
+
+                                                // Clear cart
+                                                localStorage.removeItem('cart');
+
+                                                // Reset button
+                                                checkoutBtn.innerHTML = originalText;
+                                                checkoutBtn.disabled = false;
+                                                checkoutBtn.style.opacity = '1';
+
+                                                // Redirect after showing success message
+                                                setTimeout(() => {
+                                                    window.location.href = 'index.html?orderSuccess=true';
+                                                }, 2000);
+
+                                            }, 1500);
+                                        }
+
+                                        // Enhanced responsive form interactions
+                                        function setupResponsiveFormEnhancements() {
+                                            const formInputs = document.querySelectorAll('input[type="text"], select');
+
+                                            formInputs.forEach(input => {
+                                                // Enhanced focus/blur effects for mobile
+                                                input.addEventListener('focus', function () {
+                                                    this.style.borderColor = 'var(--secondary-color)';
+                                                    this.style.boxShadow = '0 0 0 3px rgba(79, 209, 199, 0.1)';
+
+                                                    // Scroll input into view on mobile
+                                                    if (window.innerWidth <= 768) {
+                                                        setTimeout(() => {
+                                                            this.scrollIntoView({
+                                                                behavior: 'smooth',
+                                                                block: 'center',
+                                                                inline: 'nearest'
+                                                            });
+                                                        }, 300);
+                                                    }
+                                                });
+
+                                                input.addEventListener('blur', function () {
+                                                    if (this.value.trim()) {
+                                                        this.style.borderColor = 'var(--border-color)';
+                                                        this.style.boxShadow = '';
+                                                    }
+                                                });
+
+                                                // Real-time validation feedback
+                                                input.addEventListener('input', function () {
+                                                    if (this.value.trim()) {
+                                                        this.style.borderColor = 'var(--secondary-color)';
+                                                        this.style.boxShadow = '0 0 0 2px rgba(79, 209, 199, 0.1)';
+                                                    }
+                                                });
+                                            });
+                                        }
+
+                                        // Handle orientation changes
+                                        function handleOrientationChange() {
+                                            const navMenu = document.getElementById('navMenu');
+                                            const mobileToggle = document.getElementById('mobileToggle');
+
+                                            if (navMenu && navMenu.classList.contains('mobile-open')) {
+                                                navMenu.classList.remove('mobile-open');
+                                                mobileToggle.querySelector('i').className = 'fas fa-bars';
+                                                document.body.style.overflow = '';
+                                            }
+                                        }
+
+                                        // Close dropdowns and menus when clicking outside
+                                        document.addEventListener('click', function (event) {
+                                            const dropdown = document.getElementById('userDropdown');
+                                            const userBtn = document.getElementById('userBtn');
+                                            const navMenu = document.getElementById('navMenu');
+                                            const mobileToggle = document.getElementById('mobileToggle');
+
+                                            // Close user dropdown
+                                            if (userBtn && dropdown && !userBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                                                dropdown.classList.remove('show');
+                                                userBtn.classList.remove('active');
+                                            }
+
+                                            // Close mobile menu
+                                            if (mobileToggle && navMenu && !mobileToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                                                navMenu.classList.remove('mobile-open');
+                                                mobileToggle.querySelector('i').className = 'fas fa-bars';
+                                                document.body.style.overflow = '';
+                                            }
+                                        });
+
+                                        // Initialize page with responsive enhancements
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            loadCheckoutData();
+                                            setupResponsiveFormEnhancements();
+
+                                            // Add smooth scroll behavior
+                                            document.documentElement.style.scrollBehavior = 'smooth';
+
+                                            // Handle orientation changes
+                                            window.addEventListener('orientationchange', handleOrientationChange);
+                                            window.addEventListener('resize', handleOrientationChange);
+                                        });
+        </script>
+
+        <script src="assets/js/notification.js"></script>
+        <script src="assets/js/content-loader.js"></script>
+        <script src="assets/js/checkout.js"></script>
+
+        <script src="assets/js/printinvoice.js"></script>
+        <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+
+        
+          <script src="assets/js/sign-out.js"></script>
+        
+    </body>
+
+</html>

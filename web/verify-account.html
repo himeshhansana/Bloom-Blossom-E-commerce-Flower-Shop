@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Verify Account - Bloom & Blossom</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+         <link rel="shortcut icon" type="image/x-icon" href="assets/images/flowerlogo.png">
+    </head>
+    <body>
+        <div class="container">
+
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-leaf" style="color: #4CAF50; margin-right: 10px;"></i>
+                    Bloom & Blossom
+                </div>
+                <div class="header-buttons">
+                    <span class="btn-secondary">Already a member?</span>
+                    <a href="sign-in.html" class="btn-primary">Sign In</a>
+                </div>
+            </div>
+
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <div class="left-content">
+                    <h2>Almost There!</h2>
+                    <p>Please verify your email to secure your account. Check your inbox for a 6-digit code.</p>
+                    <div class="illustration">
+                        <div class="flower-icon">🌻</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <div class="form-container">
+                    <h1>Verify Your Account</h1>
+                    <p style="color: green" class="subtitle">Enter the verification code sent to your email.</p>
+
+                    <p id="message" class="text-danger" style="font-weight: bold;"></p>
+
+                    <form id="verifyForm" onsubmit="event.preventDefault(); verifyAccount();">
+                        <div class="form-group">
+                            <label style="color: goldenrod" for="verificationCode">Verification Code Sent</label>
+                            <input type="text" id="verificationCode" class="form-control"
+                                   placeholder="Enter 6-digit verification code" required maxlength="6"
+                                   pattern="[0-9]{6}" inputmode="numeric" autocomplete="one-time-code">
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="axil-btn btn-bg-primary submit-btn btn-form">Verify & Continue</button>
+                        </div>
+
+                        <div class="form-links">
+                            <a href="#" id="resendCode">Didn't receive code? Resend</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flower emoji animation -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const flowerIcon = document.querySelector('.flower-icon');
+                const flowers = ['🌻', '🌸', '🌺', '🌷', '🌹', '🌼'];
+
+                setInterval(() => {
+                    const randomFlower = flowers[Math.floor(Math.random() * flowers.length)];
+                    flowerIcon.textContent = randomFlower;
+                }, 3000);
+            });
+        </script>
+
+        <script src="assets/js/verify-account.js"></script>
+    </body>
+</html>

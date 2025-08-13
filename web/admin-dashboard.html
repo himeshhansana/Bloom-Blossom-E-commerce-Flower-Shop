@@ -1,0 +1,2695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simple Admin Dashboard - Bloom & Blossom</title>
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/flowerlogo.png">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <style>
+            :root {
+                --primary-color: #4FD1C7;
+                --secondary-color: #F093FB;
+                --text-primary: #2D3748;
+                --text-secondary: #718096;
+                --bg-light: #F7FAFC;
+            }
+
+            .stats-card.loading {
+                opacity: 0.7;
+                background-color: #f8f9fa;
+            }
+
+            .stats-card.error {
+                background-color: #fff3f3;
+            }
+
+            .stats-card.error .stats-number {
+                color: #dc3545;
+            }
+
+            .stats-card .stats-number {
+                transition: all 0.3s ease;
+            }
+
+
+            body {
+                background-color: var(--bg-light);
+                font-family: 'Arial', sans-serif;
+            }
+
+            .sidebar {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                min-height: 100vh;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar .nav-link {
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                margin: 5px 10px;
+                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                font-weight: 500;
+                text-align: left;
+                width: calc(100% - 20px);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                min-height: 50px;
+                font-size: 0.95rem;
+            }
+
+            .sidebar .nav-link:hover {
+                background: rgba(255, 255, 255, 0.25);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .sidebar .nav-link.active {
+                background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+                border: 1px solid rgba(255, 255, 255, 0.4);
+            }
+
+            .dashboard-content {
+                padding: 30px;
+            }
+
+            .page-title {
+                background: white;
+                padding: 25px;
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                border-left: 5px solid var(--primary-color);
+            }
+
+            .page-title h2 {
+                margin: 0;
+                color: var(--text-primary);
+                font-weight: 600;
+                font-size: 1.8rem;
+            }
+
+            .form-group {
+                margin-bottom: 25px;
+            }
+
+            .form-group label {
+                font-weight: 600;
+                margin-bottom: 10px;
+                display: block;
+                color: var(--text-primary);
+                font-size: 0.95rem;
+            }
+
+            .form-control {
+                border: 2px solid #e2e8f0;
+                border-radius: 10px;
+                padding: 12px 15px;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
+                min-height: 48px;
+                line-height: 1.5;
+            }
+
+            .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 0.2rem rgba(79, 209, 199, 0.25);
+            }
+
+            .btn-modern {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                border: none;
+                border-radius: 10px;
+                padding: 12px 25px;
+                color: white;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 15px rgba(79, 209, 199, 0.2);
+                min-height: 48px;
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+
+            .btn-modern:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(79, 209, 199, 0.4);
+                color: white;
+            }
+
+            .btn-modern:active {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(79, 209, 199, 0.3);
+            }
+
+            /* Secondary button style */
+            .btn-secondary {
+                background: linear-gradient(135deg, #6c757d, #5a6268);
+                border: none;
+                border-radius: 10px;
+                padding: 12px 25px;
+                color: white;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 15px rgba(108, 117, 125, 0.2);
+            }
+
+            .btn-secondary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+                color: white;
+            }
+
+            /* Success button style */
+            .btn-success {
+                background: linear-gradient(135deg, var(--success-color, #48BB78), #38A169);
+                border: none;
+                border-radius: 10px;
+                padding: 12px 25px;
+                color: white;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 15px rgba(72, 187, 120, 0.2);
+            }
+
+            .btn-success:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+                color: white;
+            }
+
+            /* Danger button style */
+            .btn-danger {
+                background: linear-gradient(135deg, var(--error-color, #F56565), #E53E3E);
+                border: none;
+                border-radius: 10px;
+                padding: 12px 25px;
+                color: white;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 15px rgba(245, 101, 101, 0.2);
+            }
+
+            .btn-danger:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(245, 101, 101, 0.4);
+                color: white;
+            }
+
+            /* Mobile toggle button */
+            .mobile-toggle {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                border: none;
+                color: white;
+                padding: 12px 15px;
+                border-radius: 10px;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(79, 209, 199, 0.2);
+                min-height: 48px;
+                min-width: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-toggle:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(79, 209, 199, 0.3);
+            }
+
+            .alert-modern {
+                border: none;
+                border-radius: 10px;
+                padding: 15px 20px;
+                margin-bottom: 20px;
+            }
+
+            .alert-danger {
+                background: rgba(245, 101, 101, 0.1);
+                color: #c53030;
+                border-left: 4px solid #f56565;
+            }
+
+            .alert-success {
+                background: rgba(72, 187, 120, 0.1);
+                color: #2f855a;
+                border-left: 4px solid #48bb78;
+            }
+
+            .card {
+                border: none;
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                margin-bottom: 30px;
+            }
+
+            .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .card-body {
+                padding: 30px;
+            }
+
+            .nav-tabs {
+                border: none;
+                margin-bottom: 30px;
+            }
+
+            .nav-tabs .nav-link {
+                border: none;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+                color: var(--text-secondary);
+                border-radius: 10px;
+                margin-right: 5px;
+                margin-bottom: 5px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(226, 232, 240, 0.5);
+                padding: 12px 18px;
+                min-height: 48px;
+                font-size: 0.95rem;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .nav-tabs .nav-link.active {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(79, 209, 199, 0.3);
+            }
+
+            .nav-tabs .nav-link:hover:not(.active) {
+                background: linear-gradient(135deg, rgba(79, 209, 199, 0.1), rgba(240, 147, 251, 0.1));
+                color: var(--text-primary);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            .brand-logo {
+                color: white;
+                font-size: 1.5rem;
+                font-weight: bold;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 25px;
+            }
+
+            .brand-logo:hover {
+                color: white;
+            }
+
+            .brand-logo i {
+                font-size: 2rem;
+            }
+
+            /* Enhanced Table Styling */
+            .table-responsive {
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                background: white;
+            }
+
+            .table {
+                margin-bottom: 0;
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+
+            .table thead th {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
+                border: none;
+                padding: 18px 20px;
+                font-weight: 600;
+                font-size: 0.95rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            .table tbody td {
+                padding: 16px 20px;
+                border: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                vertical-align: middle;
+                font-size: 0.95rem;
+                color: #000000 !important;
+            }
+
+            .table tbody tr {
+                transition: all 0.3s ease;
+                background: white;
+            }
+
+            .table tbody tr:hover {
+                background: linear-gradient(135deg, rgba(79, 209, 199, 0.05), rgba(240, 147, 251, 0.05));
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            /* Enhanced Badge Styling */
+            .badge {
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-weight: 600;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            .badge.bg-success {
+                background: linear-gradient(135deg, #48BB78, #38A169) !important;
+                color: white;
+            }
+
+            .badge.bg-warning {
+                background: linear-gradient(135deg, #F6AD55, #ED8936) !important;
+                color: white;
+            }
+
+            .badge.bg-danger {
+                background: linear-gradient(135deg, #F56565, #E53E3E) !important;
+                color: white;
+            }
+
+            .badge.bg-primary {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+                color: white;
+            }
+
+            /* Table Order ID Styling */
+            .table tbody td:first-child {
+                font-weight: 600;
+                color: #000000 !important;
+                font-family: 'Courier New', monospace;
+            }
+
+            /* Table Amount Styling */
+            .table tbody td:nth-child(4) {
+                font-weight: 700;
+                color: #000000 !important;
+                font-size: 1rem;
+            }
+
+            /* Mobile Table Enhancements */
+            @media (max-width: 768px) {
+                .table-responsive {
+                    border-radius: 12px;
+                    font-size: 0.85rem;
+                }
+
+                .table thead th {
+                    padding: 12px 8px;
+                    font-size: 0.8rem;
+                }
+
+                .table tbody td {
+                    padding: 12px 8px;
+                    font-size: 0.85rem;
+                }
+
+                .badge {
+                    padding: 6px 12px;
+                    font-size: 0.7rem;
+                }
+
+                /* Stack table content on very small screens */
+                @media (max-width: 576px) {
+
+                    .table,
+                    .table thead,
+                    .table tbody,
+                    .table th,
+                    .table td,
+                    .table tr {
+                        display: block;
+                    }
+
+                    .table thead tr {
+                        position: absolute;
+                        top: -9999px;
+                        left: -9999px;
+                    }
+
+                    .table tr {
+                        background: white;
+                        border-radius: 12px;
+                        margin-bottom: 15px;
+                        padding: 15px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                        border: 1px solid rgba(0, 0, 0, 0.05);
+                    }
+
+                    .table td {
+                        border: none !important;
+                        padding: 8px 0;
+                        position: relative;
+                        padding-left: 35%;
+                        font-size: 0.9rem;
+                    }
+
+                    .table td:before {
+                        content: attr(data-label) ": ";
+                        position: absolute;
+                        left: 6px;
+                        width: 30%;
+                        text-align: left;
+                        font-weight: 600;
+                        color: var(--text-secondary);
+                        font-size: 0.8rem;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+
+            /* Enhanced Mobile Responsive Styles */
+            @media (max-width: 480px) {
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    z-index: 9999;
+                    transition: left 0.3s ease;
+                    height: 100vh;
+                    overflow-y: auto;
+                }
+
+                .sidebar.show {
+                    left: 0;
+                }
+
+                .dashboard-content {
+                    padding: 8px;
+                    margin-left: 0;
+                }
+
+                .page-title {
+                    padding: 12px;
+                    margin-bottom: 12px;
+                    font-size: 0.9rem;
+                }
+
+                .page-title h2 {
+                    font-size: 1.1rem;
+                }
+
+                .card {
+                    margin-bottom: 12px;
+                    border-radius: 12px;
+                }
+
+                .card-body {
+                    padding: 12px;
+                }
+
+                .form-control {
+                    font-size: 16px;
+                    /* Prevent zoom on iOS */
+                    padding: 10px 12px;
+                    margin-bottom: 8px;
+                    border-radius: 8px;
+                }
+
+                .btn-modern {
+                    width: 100%;
+                    padding: 12px;
+                    font-size: 0.95rem;
+                    margin-top: 8px;
+                    border-radius: 8px;
+                }
+
+                .sidebar .nav-link {
+                    padding: 10px 12px;
+                    font-size: 0.85rem;
+                    margin: 2px 6px;
+                    border-radius: 8px;
+                }
+
+                .table-responsive {
+                    font-size: 0.75rem;
+                    border-radius: 8px;
+                }
+
+                .table th,
+                .table td {
+                    padding: 6px 4px;
+                    font-size: 0.75rem;
+                }
+
+                .brand-logo {
+                    font-size: 1rem;
+                    padding: 10px;
+                }
+
+                .brand-logo i {
+                    font-size: 1.2rem;
+                }
+
+                .col-lg-6,
+                .col-lg-4,
+                .col-lg-3,
+                .col-md-6,
+                .col-md-4 {
+                    margin-bottom: 10px;
+                }
+
+                .form-group {
+                    margin-bottom: 15px;
+                }
+
+                .form-group label {
+                    font-size: 0.85rem;
+                    margin-bottom: 6px;
+                }
+
+                /* Optimize mobile layout */
+                .row>[class*="col-"] {
+                    padding-left: 8px;
+                    padding-right: 8px;
+                }
+            }
+
+            /* Enhanced Tablet Responsiveness */
+            @media (min-width: 481px) and (max-width: 768px) {
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: -100%;
+                    width: 260px;
+                    z-index: 9999;
+                    transition: left 0.3s ease;
+                    height: 100vh;
+                    overflow-y: auto;
+                }
+
+                .sidebar.show {
+                    left: 0;
+                }
+
+                .sidebar-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 9998;
+                    display: none;
+                }
+
+                .sidebar-overlay.show {
+                    display: block;
+                }
+
+                .dashboard-content {
+                    padding: 12px;
+                    margin-left: 0;
+                }
+
+                .mobile-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background: white;
+                    padding: 12px 16px;
+                    border-radius: 12px;
+                    margin-bottom: 16px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .mobile-toggle {
+                    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                    border: none;
+                    color: white;
+                    padding: 10px 12px;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 8px rgba(79, 209, 199, 0.2);
+                    min-height: 40px;
+                    min-width: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .mobile-toggle:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(79, 209, 199, 0.3);
+                }
+
+                .mobile-title {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    margin: 0;
+                }
+
+                .page-title {
+                    padding: 16px;
+                    margin-bottom: 16px;
+                    border-radius: 12px;
+                }
+
+                .page-title h2 {
+                    font-size: 1.3rem;
+                }
+
+                .card {
+                    margin-bottom: 16px;
+                    border-radius: 12px;
+                }
+
+                .card-body {
+                    padding: 16px;
+                }
+
+                .form-control {
+                    padding: 10px 12px;
+                    font-size: 15px;
+                    margin-bottom: 4px;
+                    border-radius: 8px;
+                }
+
+                .btn-modern {
+                    width: 100%;
+                    padding: 12px;
+                    font-size: 0.95rem;
+                    margin-top: 8px;
+                    border-radius: 8px;
+                }
+
+                .table-responsive {
+                    font-size: 0.8rem;
+                    overflow-x: auto;
+                    border-radius: 8px;
+                }
+
+                .table {
+                    min-width: 500px;
+                }
+
+                .nav-tabs .nav-link {
+                    font-size: 0.85rem;
+                    padding: 10px 12px;
+                    margin-bottom: 4px;
+                    border-radius: 8px;
+                }
+
+                .brand-logo {
+                    font-size: 1.1rem;
+                    padding: 12px;
+                }
+
+                .brand-logo i {
+                    font-size: 1.3rem;
+                }
+
+                .sidebar .nav-link {
+                    padding: 12px 16px;
+                    font-size: 0.9rem;
+                    margin: 2px 8px;
+                    border-radius: 8px;
+                }
+
+                /* Better form layouts for tablets */
+                .row>[class*="col-"] {
+                    margin-bottom: 8px;
+                    padding-left: 8px;
+                    padding-right: 8px;
+                }
+
+                .form-group {
+                    margin-bottom: 16px;
+                }
+
+                .form-group label {
+                    font-weight: 600;
+                    margin-bottom: 6px;
+                    display: block;
+                    font-size: 0.9rem;
+                }
+
+                /* Responsive grid adjustments */
+                .col-lg-6 {
+                    width: 100%;
+                }
+
+                .col-lg-4 {
+                    width: 100%;
+                }
+
+                .col-lg-3 {
+                    width: 50%;
+                }
+            }
+
+            /* Tablet Responsive Styles */
+            @media (min-width: 769px) and (max-width: 1024px) {
+                .sidebar {
+                    width: 240px;
+                    position: relative;
+                }
+
+                .dashboard-content {
+                    padding: 25px 20px;
+                }
+
+                .page-title {
+                    padding: 18px 22px;
+                }
+
+                .page-title h2 {
+                    font-size: 1.7rem;
+                }
+
+                .mobile-header {
+                    display: none;
+                }
+
+                .card-body {
+                    padding: 25px;
+                }
+
+                .form-control {
+                    padding: 12px 15px;
+                    min-height: 48px;
+                    font-size: 0.95rem;
+                }
+
+                .btn-modern {
+                    padding: 12px 20px;
+                    min-height: 48px;
+                    width: auto;
+                }
+
+                .nav-tabs .nav-link {
+                    padding: 12px 18px;
+                    font-size: 0.95rem;
+                    min-height: 48px;
+                }
+
+                .sidebar .nav-link {
+                    padding: 14px 18px;
+                    font-size: 0.9rem;
+                    min-height: 50px;
+                }
+
+                .table-responsive {
+                    font-size: 0.9rem;
+                }
+
+                /* Ensure proper grid layout on tablets */
+                .row.g-3>[class*="col-"] {
+                    margin-bottom: 15px;
+                }
+
+                /* Better form layout for tablets */
+                .col-lg-4 {
+                    flex: 0 0 auto;
+                    width: 50%;
+                }
+
+                .col-lg-6 {
+                    flex: 0 0 auto;
+                    width: 100%;
+                }
+
+                /* Optimize product cards for tablets */
+                .col-md-6.col-lg-3 {
+                    flex: 0 0 auto;
+                    width: 50%;
+                }
+            }
+
+            /* Small Laptop Styles */
+            @media (min-width: 1025px) and (max-width: 1366px) {
+                .sidebar {
+                    width: 260px;
+                    position: relative;
+                }
+
+                .dashboard-content {
+                    padding: 30px 25px;
+                }
+
+                .page-title h2 {
+                    font-size: 1.8rem;
+                }
+
+                .mobile-header {
+                    display: none;
+                }
+
+                .card-body {
+                    padding: 30px;
+                }
+
+                .form-control {
+                    padding: 12px 15px;
+                    min-height: 48px;
+                }
+
+                .btn-modern {
+                    padding: 12px 25px;
+                    width: auto;
+                    min-height: 48px;
+                }
+
+                .nav-tabs .nav-link {
+                    padding: 15px 20px;
+                    min-height: 48px;
+                }
+
+                .sidebar .nav-link {
+                    padding: 15px 20px;
+                    min-height: 50px;
+                }
+
+                /* Optimize form layouts for small laptops */
+                .col-lg-4 {
+                    flex: 0 0 auto;
+                    width: 33.33333333%;
+                }
+
+                .col-lg-6 {
+                    flex: 0 0 auto;
+                    width: 50%;
+                }
+
+                .col-lg-3 {
+                    flex: 0 0 auto;
+                    width: 25%;
+                }
+            }
+
+            /* Large Laptop / Desktop Styles */
+            @media (min-width: 1367px) and (max-width: 1920px) {
+                .mobile-header {
+                    display: none;
+                }
+
+                .sidebar {
+                    position: relative;
+                    width: 280px;
+                }
+
+                .dashboard-content {
+                    padding: 35px 30px;
+                }
+
+                .page-title {
+                    padding: 30px;
+                }
+
+                .page-title h2 {
+                    font-size: 2rem;
+                }
+
+                .card-body {
+                    padding: 35px;
+                }
+
+                .form-control {
+                    padding: 14px 16px;
+                    min-height: 50px;
+                    font-size: 1rem;
+                }
+
+                .btn-modern {
+                    padding: 14px 28px;
+                    width: auto;
+                    min-height: 50px;
+                    font-size: 1rem;
+                }
+
+                .nav-tabs .nav-link {
+                    padding: 16px 22px;
+                    min-height: 50px;
+                    font-size: 1rem;
+                }
+
+                .sidebar .nav-link {
+                    padding: 16px 22px;
+                    min-height: 52px;
+                    font-size: 1rem;
+                }
+
+                .form-group {
+                    margin-bottom: 30px;
+                }
+
+                .table-responsive {
+                    font-size: 1rem;
+                }
+            }
+
+            /* Ultra-wide and 4K Displays */
+            @media (min-width: 1921px) {
+                .mobile-header {
+                    display: none;
+                }
+
+                .sidebar {
+                    position: relative;
+                    width: 320px;
+                }
+
+                .dashboard-content {
+                    padding: 40px 35px;
+                }
+
+                .page-title {
+                    padding: 35px;
+                }
+
+                .page-title h2 {
+                    font-size: 2.2rem;
+                }
+
+                .card-body {
+                    padding: 40px;
+                }
+
+                .form-control {
+                    padding: 16px 18px;
+                    min-height: 52px;
+                    font-size: 1.1rem;
+                }
+
+                .btn-modern {
+                    padding: 16px 30px;
+                    width: auto;
+                    min-height: 52px;
+                    font-size: 1.1rem;
+                }
+
+                .nav-tabs .nav-link {
+                    padding: 18px 24px;
+                    min-height: 52px;
+                    font-size: 1.1rem;
+                }
+
+                .sidebar .nav-link {
+                    padding: 18px 24px;
+                    min-height: 54px;
+                    font-size: 1.1rem;
+                }
+
+                .form-group {
+                    margin-bottom: 35px;
+                }
+
+                .table-responsive {
+                    font-size: 1.1rem;
+                }
+
+                .brand-logo {
+                    font-size: 1.7rem;
+                    padding: 30px;
+                }
+
+                .brand-logo i {
+                    font-size: 2.2rem;
+                }
+            }
+
+            /* Always hide mobile header on larger screens */
+            .mobile-header {
+                display: none;
+            }
+
+            @media (max-width: 768px) {
+                .mobile-header {
+                    display: flex;
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                }
+
+                /* Enhanced mobile sidebar */
+                .sidebar {
+                    backdrop-filter: blur(20px);
+                    -webkit-backdrop-filter: blur(20px);
+                }
+
+                .sidebar-overlay {
+                    backdrop-filter: blur(2px);
+                    -webkit-backdrop-filter: blur(2px);
+                }
+            }
+
+            /* Enhanced Container and Layout */
+            .container-fluid {
+                padding: 0;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+
+            .row {
+                margin: 0;
+                min-height: 100vh;
+                min-height: calc(var(--vh, 1vh) * 100); /* Mobile viewport fix */
+            }
+
+            .col-md-3.col-lg-2 {
+                padding: 0;
+            }
+
+            .col-md-9.col-lg-10 {
+                padding: 0;
+                flex: 1;
+            }
+
+            /* Responsive improvements */
+            @media (max-width: 768px) {
+                .col-md-3.col-lg-2 {
+                    position: absolute;
+                    width: 0;
+                    z-index: -1;
+                }
+
+                .col-md-9.col-lg-10 {
+                    width: 100%;
+                    max-width: 100%;
+                    flex: none;
+                }
+            }
+
+            @media (min-width: 769px) {
+                .col-md-3.col-lg-2 {
+                    position: relative;
+                    z-index: auto;
+                }
+
+                .dashboard-content {
+                    min-height: 100vh;
+                }
+            }
+
+            /* Small screen adjustments */
+            @media (max-width: 576px) {
+                .container-fluid {
+                    padding: 0;
+                }
+
+                .dashboard-content {
+                    padding: 15px;
+                }
+
+                .page-title {
+                    padding: 15px;
+                    margin-bottom: 20px;
+                }
+
+                .page-title h2 {
+                    font-size: 1.2rem;
+                }
+
+                .card-body {
+                    padding: 20px;
+                }
+
+                .form-group {
+                    margin-bottom: 20px;
+                }
+
+                .form-control {
+                    padding: 12px;
+                    font-size: 16px;
+                }
+
+                .btn-modern {
+                    padding: 14px 12px;
+                    font-size: 0.95rem;
+                    width: 100%;
+                }
+
+                .brand-logo {
+                    font-size: 1.1rem;
+                    padding: 15px 20px;
+                }
+
+                .sidebar .nav-link {
+                    padding: 12px 15px;
+                    font-size: 0.9rem;
+                    margin: 3px 8px;
+                }
+
+                .table-responsive {
+                    font-size: 0.8rem;
+                }
+
+                .table th,
+                .table td {
+                    padding: 8px 6px;
+                    font-size: 0.8rem;
+                }
+
+                .mobile-header {
+                    padding: 15px;
+                    margin-bottom: 20px;
+                }
+
+                .mobile-title {
+                    font-size: 1.1rem;
+                }
+
+                .mobile-toggle {
+                    padding: 10px 12px;
+                    font-size: 1.1rem;
+                }
+
+                .nav-tabs .nav-link {
+                    padding: 10px 12px;
+                    font-size: 0.85rem;
+                    margin-bottom: 5px;
+                }
+
+                /* Stack all columns on small screens */
+                .col-lg-6,
+                .col-lg-4,
+                .col-lg-3,
+                .col-md-6,
+                .col-md-4 {
+                    width: 100%;
+                    margin-bottom: 15px;
+                }
+
+                /* Improve form layout */
+                .row>[class*="col-"] {
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                /* Better mobile table styling */
+                .table-responsive {
+                    border-radius: 10px;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+
+                .table thead th {
+                    border-bottom: 2px solid #dee2e6;
+                    font-weight: 600;
+                }
+            }
+
+            /* Dark Mode Support */
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --primary-color: #4FD1C7;
+                    --secondary-color: #F093FB;
+                    --text-primary: #F7FAFC;
+                    --text-secondary: #CBD5E0;
+                    --bg-light: #1A202C;
+                    --bg-dark: #2D3748;
+                    --border-color: #4A5568;
+                }
+
+                body {
+                    background-color: var(--bg-light);
+                    color: var(--text-primary);
+                }
+
+                .card {
+                    background-color: var(--bg-dark);
+                    border: 1px solid var(--border-color);
+                }
+
+                .page-title {
+                    background-color: var(--bg-dark);
+                    color: var(--text-primary);
+                    border-left-color: var(--primary-color);
+                }
+
+                .form-control {
+                    background-color: var(--bg-dark);
+                    border-color: var(--border-color);
+                    color: var(--text-primary);
+                }
+
+                .form-control:focus {
+                    background-color: var(--bg-dark);
+                    border-color: var(--primary-color);
+                    color: var(--text-primary);
+                }
+
+                .table {
+                    color: var(--text-primary);
+                }
+
+                .table-dark {
+                    background-color: var(--bg-dark);
+                }
+
+                .mobile-header {
+                    background-color: var(--bg-dark);
+                    border: 1px solid var(--border-color);
+                }
+
+                .nav-tabs .nav-link:not(.active) {
+                    background: var(--bg-dark);
+                    color: var(--text-secondary);
+                    border: 1px solid var(--border-color);
+                }
+
+                .alert-modern {
+                    border: 1px solid var(--border-color);
+                }
+
+                /* Enhanced Dark Mode Table Styling */
+                .table-responsive {
+                    background-color: var(--bg-dark);
+                    border: 1px solid var(--border-color);
+                }
+
+                .table thead th {
+                    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                    color: white;
+                }
+
+                .table tbody tr {
+                    background-color: var(--bg-dark);
+                }
+
+                .table tbody tr:hover {
+                    background: linear-gradient(135deg, rgba(79, 209, 199, 0.1), rgba(240, 147, 251, 0.1));
+                }
+
+                .table tbody td {
+                    color: #000000 !important;
+                    border-bottom-color: var(--border-color);
+                }
+
+                .table tbody td:first-child {
+                    color: #000000 !important;
+                }
+
+                .table tbody td:nth-child(4) {
+                    color: #000000 !important;
+                }
+            }
+
+            /* Fix for very small screens */
+            @media (max-width: 400px) {
+                .container-fluid {
+                    padding: 0;
+                }
+
+                .dashboard-content {
+                    padding: 12px;
+                }
+
+                .page-title {
+                    padding: 12px;
+                    margin-bottom: 15px;
+                }
+
+                .page-title h2 {
+                    font-size: 1.1rem;
+                }
+
+                .mobile-title {
+                    font-size: 1rem;
+                }
+
+                .form-control {
+                    font-size: 16px;
+                    /* Prevent zoom on iOS */
+                    padding: 12px;
+                }
+
+                .btn-modern {
+                    font-size: 0.9rem;
+                    padding: 12px 10px;
+                }
+
+                .card-body {
+                    padding: 15px;
+                }
+
+                .mobile-header {
+                    padding: 12px;
+                }
+
+                .sidebar .nav-link {
+                    padding: 10px 12px;
+                    font-size: 0.85rem;
+                }
+
+                .brand-logo {
+                    font-size: 1rem;
+                    padding: 12px;
+                }
+
+                .table th,
+                .table td {
+                    padding: 6px 4px;
+                    font-size: 0.75rem;
+                }
+
+                .form-group {
+                    margin-bottom: 15px;
+                }
+
+                .nav-tabs .nav-link {
+                    padding: 8px 10px;
+                    font-size: 0.8rem;
+                }
+
+                /* Optimize sidebar for small screens */
+                .sidebar {
+                    width: calc(100vw - 20px);
+                    max-width: 300px;
+                }
+
+                /* Better button spacing */
+                .btn-modern {
+                    margin-top: 15px;
+                    margin-bottom: 10px;
+                }
+
+                /* Improve readability */
+                .card {
+                    border-radius: 12px;
+                }
+
+                .form-control {
+                    border-radius: 8px;
+                }
+            }
+
+            /* Extra responsive utilities */
+            @media (max-width: 320px) {
+                .dashboard-content {
+                    padding: 8px;
+                }
+
+                .page-title {
+                    padding: 10px;
+                }
+
+                .card-body {
+                    padding: 12px;
+                }
+
+                .mobile-header {
+                    padding: 10px;
+                }
+
+                .sidebar {
+                    width: 260px;
+                    /* Slightly smaller on very small screens */
+                }
+            }
+
+            /* Landscape phone orientation */
+            @media (max-height: 500px) and (orientation: landscape) {
+                .mobile-header {
+                    padding: 8px 15px;
+                }
+
+                .page-title {
+                    padding: 10px 15px;
+                    margin-bottom: 15px;
+                }
+
+                .dashboard-content {
+                    padding: 10px 15px;
+                }
+
+                .sidebar {
+                    width: 250px;
+                }
+
+                .card-body {
+                    padding: 15px;
+                }
+
+                .form-group {
+                    margin-bottom: 15px;
+                }
+            }
+
+            /* Portrait tablet optimization */
+            @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+                .sidebar {
+                    width: 200px;
+                }
+
+                .dashboard-content {
+                    padding: 20px 15px;
+                }
+
+                .col-lg-4 {
+                    width: 50%;
+                }
+
+                .col-lg-6 {
+                    width: 100%;
+                }
+
+                .col-lg-3 {
+                    width: 50%;
+                }
+            }
+
+            /* High DPI displays */
+            @media (-webkit-min-device-pixel-ratio: 2),
+            (min-resolution: 192dpi) {
+
+                .sidebar .nav-link,
+                .btn-modern,
+                .mobile-toggle {
+                    border: 0.5px solid rgba(255, 255, 255, 0.1);
+                }
+
+                .card {
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                }
+
+                .form-control {
+                    border-width: 1px;
+                }
+            }
+
+            /* Touch device optimizations */
+            @media (pointer: coarse) {
+
+                .btn-modern,
+                .mobile-toggle,
+                .sidebar .nav-link,
+                .nav-tabs .nav-link {
+                    min-height: 44px;
+                    /* Apple's recommended touch target size */
+                    min-width: 44px;
+                }
+
+                .form-control {
+                    min-height: 44px;
+                }
+
+                .table td,
+                .table th {
+                    padding: 12px 8px;
+                }
+
+                /* Increase tap targets */
+                .sidebar .nav-link {
+                    margin: 5px 8px;
+                }
+
+                .nav-tabs .nav-link {
+                    margin: 3px 5px;
+                }
+            }
+
+            /* Print styles */
+            @media print {
+
+                .sidebar,
+                .mobile-header,
+                .mobile-toggle {
+                    display: none !important;
+                }
+
+                .dashboard-content {
+                    margin-left: 0 !important;
+                    padding: 0 !important;
+                }
+
+                .card {
+                    box-shadow: none !important;
+                    border: 1px solid #ddd !important;
+                }
+
+                .btn-modern {
+                    display: none !important;
+                }
+
+                .page-title {
+                    border: none !important;
+                    box-shadow: none !important;
+                    background: none !important;
+                }
+            }
+
+            /* Accessibility improvements */
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            }
+
+            /* Enhanced Dark mode support */
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg-light: #0f172a;
+                    --text-primary: #f1f5f9;
+                    --text-secondary: #94a3b8;
+                }
+
+                body {
+                    color: var(--text-primary);
+                    background-color: var(--bg-light);
+                }
+
+                .card {
+                    background-color: #1e293b;
+                    color: var(--text-primary);
+                    border: 1px solid #334155;
+                }
+
+                .page-title {
+                    background-color: #1e293b;
+                    color: var(--text-primary);
+                    border-left-color: var(--primary-color);
+                    border: 1px solid #334155;
+                }
+
+                .form-control {
+                    background-color: #334155;
+                    border-color: #475569;
+                    color: var(--text-primary);
+                }
+
+                .form-control:focus {
+                    background-color: #334155;
+                    border-color: var(--primary-color);
+                    color: var(--text-primary);
+                }
+
+                .form-control::placeholder {
+                    color: #64748b;
+                }
+
+                .mobile-header {
+                    background-color: #1e293b;
+                    border: 1px solid #334155;
+                }
+
+                .table {
+                    color: var(--text-primary);
+                    background-color: transparent;
+                }
+
+                .table thead th {
+                    border-bottom-color: #475569;
+                    background-color: #334155;
+                    color: var(--text-primary);
+                }
+
+                .table tbody tr {
+                    border-bottom-color: #334155;
+                }
+
+                .table tbody tr:hover {
+                    background-color: #334155;
+                }
+
+                .table-light {
+                    background-color: #334155 !important;
+                    color: var(--text-primary) !important;
+                }
+
+                .nav-tabs .nav-link {
+                    background: linear-gradient(135deg, #334155, #475569);
+                    color: var(--text-secondary);
+                    border-color: #475569;
+                }
+
+                .nav-tabs .nav-link.active {
+                    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                    color: white;
+                }
+
+                .nav-tabs .nav-link:hover:not(.active) {
+                    background: linear-gradient(135deg, #475569, #64748b);
+                    color: var(--text-primary);
+                }
+
+                .alert-danger {
+                    background-color: rgba(239, 68, 68, 0.1);
+                    color: #fca5a5;
+                    border-left-color: #ef4444;
+                }
+
+                .alert-success {
+                    background-color: rgba(34, 197, 94, 0.1);
+                    color: #86efac;
+                    border-left-color: #22c55e;
+                }
+
+                .badge.bg-success {
+                    background-color: #22c55e !important;
+                }
+
+                .badge.bg-warning {
+                    background-color: #f59e0b !important;
+                    color: #000 !important;
+                }
+
+                .text-primary {
+                    color: var(--primary-color) !important;
+                }
+
+                .text-success {
+                    color: #22c55e !important;
+                }
+
+                .text-warning {
+                    color: #f59e0b !important;
+                }
+
+                .text-danger {
+                    color: #ef4444 !important;
+                }
+            }
+
+            /* Chart Container Styles */
+            .chart-container {
+                position: relative;
+                height: 400px;
+                margin-bottom: 15px;
+            }
+
+            .chart-small {
+                height: 300px;
+            }
+
+            .chart-large {
+                height: 500px;
+            }
+
+            /* Statistics Cards */
+            .stats-card {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
+                border-radius: 15px;
+                padding: 20px;
+                margin-bottom: 10px;
+                box-shadow: 0 4px 15px rgba(79, 209, 199, 0.2);
+                transition: all 0.3s ease;
+            }
+
+            .stats-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(79, 209, 199, 0.3);
+            }
+
+            .stats-card .stats-icon {
+                font-size: 2.5rem;
+                opacity: 0.8;
+                margin-bottom: 10px;
+            }
+
+            .stats-card .stats-number {
+                font-size: 2rem;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            .stats-card .stats-label {
+                font-size: 0.9rem;
+                opacity: 0.9;
+            }
+
+            /* Chart responsive */
+            @media (max-width: 768px) {
+                .chart-container {
+                    height: 300px;
+                }
+
+                .chart-small {
+                    height: 250px;
+                }
+
+                .stats-card {
+                    text-align: center;
+                    margin-bottom: 15px;
+                }
+
+                .stats-card .stats-number {
+                    font-size: 1.5rem;
+                }
+
+                /* Enhanced mobile chart optimization */
+                .chart-container canvas {
+                    max-width: 100% !important;
+                    height: auto !important;
+                }
+            }
+
+            /* Enhanced accessibility and mobile UX */
+            @media (max-width: 768px) {
+                /* Improve mobile form UX */
+                .form-control:focus {
+                    transform: scale(1.02);
+                    transition: transform 0.2s ease;
+                }
+
+                /* Better mobile alerts */
+                .alert-modern {
+                    position: sticky;
+                    top: 70px;
+                    z-index: 100;
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                }
+
+                /* Enhanced mobile card interactions */
+                .card {
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+
+                .card:active {
+                    transform: scale(0.98);
+                }
+
+                /* Better mobile table interaction */
+                .table tbody tr {
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                }
+
+                .table tbody tr:active {
+                    transform: scale(0.99);
+                    background: linear-gradient(135deg, rgba(79, 209, 199, 0.1), rgba(240, 147, 251, 0.1)) !important;
+                }
+
+                /* Mobile pull-to-refresh hint */
+                .mobile-header::before {
+                    content: "";
+                    position: absolute;
+                    top: -20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 40px;
+                    height: 4px;
+                    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                    border-radius: 2px;
+                    opacity: 0.3;
+                }
+            }
+
+            /* Enhanced swipe gestures support */
+            @media (max-width: 768px) {
+                .sidebar {
+                    touch-action: pan-y;
+                    overscroll-behavior: contain;
+                }
+
+                .dashboard-content {
+                    touch-action: manipulation;
+                    overscroll-behavior: auto;
+                }
+
+                /* Swipe indicator */
+                .sidebar::after {
+                    content: "";
+                    position: absolute;
+                    right: -2px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 2px;
+                    height: 50px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 1px;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+
+                .sidebar.show::after {
+                    opacity: 1;
+                }
+            }
+
+            /* Enhanced mobile loading states */
+            @media (max-width: 768px) {
+                .btn-modern:disabled {
+                    opacity: 0.6;
+                    transform: none !important;
+                    cursor: not-allowed;
+                }
+
+                .btn-modern.loading {
+                    position: relative;
+                    color: transparent !important;
+                }
+
+                .btn-modern.loading::after {
+                    content: "";
+                    position: absolute;
+                    width: 16px;
+                    height: 16px;
+                    top: 50%;
+                    left: 50%;
+                    margin-left: -8px;
+                    margin-top: -8px;
+                    border: 2px solid transparent;
+                    border-top-color: #ffffff;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+            }
+
+            /* Better mobile offline support indicators */
+            @media (max-width: 768px) {
+                .offline-indicator {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    background: #ff6b6b;
+                    color: white;
+                    text-align: center;
+                    padding: 8px;
+                    font-size: 0.85rem;
+                    z-index: 10000;
+                    transform: translateY(-100%);
+                    transition: transform 0.3s ease;
+                }
+
+                .offline-indicator.show {
+                    transform: translateY(0);
+                }
+            }
+        </style>
+    </head>
+
+    <body onload="loadProductData();">
+        <div class="container-fluid">
+            <!-- Mobile Sidebar Overlay -->
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
+                    <a href="index.html" class="brand-logo">
+                        <i class="fas fa-seedling"></i>
+                        <span>Bloom & Blossom</span>
+                    </a>
+
+                    <ul class="nav nav-tabs flex-column" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="add-product-tab" data-bs-toggle="tab"
+                                    data-bs-target="#add-product" type="button" role="tab" aria-controls="add-product"
+                                    aria-selected="true">
+                                <i class="fas fa-plus-circle"></i> Add Product
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics"
+                                    type="button" role="tab" aria-controls="analytics" aria-selected="false">
+                                <i class="fas fa-chart-bar"></i> Analytics
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders"
+                                    type="button" role="tab" aria-controls="orders" aria-selected="false">
+                                <i class="fas fa-shopping-cart"></i> Orders
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products"
+                                    type="button" role="tab" aria-controls="products" aria-selected="false">
+                                <i class="fas fa-box"></i> Products
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 dashboard-content">
+                    <!-- Mobile Header -->
+                    <div class="mobile-header">
+                        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h3 class="mobile-title" id="mobileTitle">Add Product</h3>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-seedling text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="myTabContent">
+
+                        <!-- Add Product Tab -->
+                        <div class="tab-pane fade show active" id="add-product" role="tabpanel"
+                             aria-labelledby="add-product-tab">
+                            <div class="page-title">
+                                <h2><i class="fas fa-plus-circle"></i> Create New Product</h2>
+                            </div>
+                            <p id="message" style="text-align: center; font-weight: bold; color: red; margin: 20px auto;"></p>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="alert-modern alert-danger" id="productMessage" style="display: none;"></div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="flowers_category">Flowers Category <span class="text-danger">*</span></label>
+                                                <select class="form-control" id="flowers_category" onchange="loadModels();" required>
+                                                    <option value="">Select Flowers Category</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="flower_type">Flowers Type <span class="text-danger">*</span></label>
+                                                <select class="form-control" id="flower_type" required>
+                                                    <option value="">Select Flowers Type</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="title">Title <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="title"
+                                                       placeholder="Enter product title" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="description">Description <span class="text-danger">*</span></label>
+                                                <textarea class="form-control" id="description" rows="4"
+                                                          placeholder="Enter product description" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="size">Size</label>
+                                                <select class="form-control" id="size">
+                                                    <option value="0">Select Size</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="color">Color</label>
+                                                <select class="form-control" id="color">
+                                                    <option value="0">Select Color</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="freshness">Condition</label>
+                                                <select class="form-control" id="freshness">
+                                                    <option value="0">Select Condition</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="price">Price <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rs</span>
+                                                    <input type="number" class="form-control" id="price" 
+                                                           placeholder="0.00" min="0" step="0.01" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="qty">Quantity <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="qty" 
+                                                       min="1" value="1" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="img1">Product Image 1 <span class="text-danger">*</span></label>
+                                                <input id="img1" class="form-control" type="file" 
+                                                       accept="image/jpeg,image/jpg,image/png,image/webp" required>
+                                                <small class="text-muted">Recommended: 800x600px or larger</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="img2">Product Image 2</label>
+                                                <input id="img2" class="form-control" type="file" 
+                                                       accept="image/jpeg,image/jpg,image/png,image/webp">
+                                                <small class="text-muted">Optional additional view</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="img3">Product Image 3</label>
+                                                <input id="img3" class="form-control" type="file" 
+                                                       accept="image/jpeg,image/jpg,image/png,image/webp">
+                                                <small class="text-muted">Optional additional view</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" style="margin-top: 20px">
+                                            <button class="btn-modern" onclick="saveProduct();">
+                                                <i class="fas fa-plus"></i> Add Product To Listing
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-pane fade" id="analytics" role="tabpanel" aria-labelledby="analytics-tab">
+                            <div class="page-title">
+                                <h2><i class="fas fa-chart-bar"></i> Sales Analytics & Insights</h2>
+                            </div>
+
+                            <!-- Statistics Cards Row -->
+                            <div class="row">
+                                <!-- Total Revenue -->
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="stats-card" data-type="total-revenue">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                        <div class="stats-number">RS.</div>
+                                        <div class="stats-label">Total Revenue</div>
+                                    </div>
+                                </div>
+
+                                <!-- Total Orders -->
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="stats-card" data-type="total-orders">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </div>
+                                        <div class="stats-number">0</div>
+                                        <div class="stats-label">Total Orders</div>
+                                    </div>
+                                </div>
+
+                                <!-- Total Users -->
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="stats-card" data-type="total-users">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div class="stats-number">0</div>
+                                        <div class="stats-label">Total Users</div>
+                                    </div>
+                                </div>
+
+                                <!-- Products Sold -->
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="stats-card" data-type="total-products">
+                                        <div class="stats-icon">
+                                            <i class="fas fa-seedling"></i>
+                                        </div>
+                                        <div class="stats-number">0</div>
+                                        <div class="stats-label">Products Sold</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Section -->
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <i class="fas fa-chart-pie me-2"></i>Revenue by Category
+                                            </h5>
+                                            <div class="chart-container">
+                                                <canvas id="revenueByCategoryChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <i class="fas fa-chart-bar me-2"></i>Monthly Comparison
+                                            </h5>
+                                            <div class="chart-container">
+                                                <canvas id="monthlyComparisonChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders Tab -->
+                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                        <div class="page-title">
+                            <h2><i class="fas fa-shopping-cart"></i> Recent Order Items</h2>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                                <th><i class="fas fa-box me-2"></i>Product</th>
+                                                <th><i class="fas fa-shopping-cart me-2"></i>Order ID</th>
+                                                <th><i class="fas fa-cubes me-2"></i>Quantity</th>
+                                                <th><i class="fas fa-info-circle me-2"></i>Status</th>
+                                                <th><i class="fas fa-truck me-2"></i>Delivery Type</th>
+                                                <th><i class="fas fa-star me-2"></i>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="7" class="text-center">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                    <span class="ms-2">Loading order items...</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Tab -->
+                    <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+                        <div class="page-title"  style="margin-top: -1410px;">
+                            <h2><i class="fas fa-box"></i> Product Inventory</h2>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-box fa-3x text-primary mb-3"></i>
+                                        <h5>Total Products</h5>
+                                        <h3 class="text-primary" id="totalProducts">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                                        <h5>In Stock</h5>
+                                        <h3 class="text-success" id="inStock">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                                        <h5>Low Stock</h5>
+                                        <h3 class="text-warning" id="lowStock">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-times-circle fa-3x text-danger mb-3"></i>
+                                        <h5>Out of Stock</h5>
+                                        <h3 class="text-danger" id="outOfStock">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card" style="margin-top: 00px;">
+                                <div class="card-body">
+                                    <table class="table table-striped" id="productsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Title</th>
+                                                <th>Type</th>
+                                                <th>Price</th>
+                                                <th>Stock</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6" class="text-center py-5">
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <i class="fas fa-seedling fa-3x text-muted mb-3"></i>
+                                                        <h5 class="text-muted mb-2">No products yet</h5>
+                                                        <p class="text-muted">Start by adding your first product!</p>
+                                                        <button class="btn btn-sm btn-outline-primary" onclick="document.getElementById('add-product-tab').click()">
+                                                            <i class="fas fa-plus me-1"></i> Add Product
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+                                                            // Mobile sidebar toggle functionality
+                                                            const mobileToggle = document.getElementById('mobileToggle');
+                                                            const sidebar = document.getElementById('sidebar');
+                                                            const sidebarOverlay = document.getElementById('sidebarOverlay');
+                                                            const mobileTitle = document.getElementById('mobileTitle');
+
+                                                            if (mobileToggle) {
+                                                                mobileToggle.addEventListener('click', function () {
+                                                                    sidebar.classList.toggle('show');
+                                                                    sidebarOverlay.classList.toggle('show');
+                                                                });
+                                                            }
+
+                                                            if (sidebarOverlay) {
+                                                                sidebarOverlay.addEventListener('click', function () {
+                                                                    sidebar.classList.remove('show');
+                                                                    sidebarOverlay.classList.remove('show');
+                                                                });
+                                                            }
+
+                                                            // Update mobile title when tab changes
+                                                            const navLinks = document.querySelectorAll('.nav-link');
+                                                            navLinks.forEach(link => {
+                                                                link.addEventListener('click', function () {
+                                                                    const tabText = this.textContent.trim();
+                                                                    if (mobileTitle) {
+                                                                        mobileTitle.textContent = tabText;
+                                                                    }
+
+                                                                    // Close mobile sidebar when tab is selected
+                                                                    if (window.innerWidth <= 768) {
+                                                                        sidebar.classList.remove('show');
+                                                                        sidebarOverlay.classList.remove('show');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            // Close sidebar on window resize if screen becomes larger
+                                                            window.addEventListener('resize', function () {
+                                                                if (window.innerWidth > 768) {
+                                                                    sidebar.classList.remove('show');
+                                                                    sidebarOverlay.classList.remove('show');
+                                                                }
+                                                            });
+
+                                                            // Save product
+
+                                                            // Chart Initialization Functions
+                                                            function initializeCharts() {
+                                                                // Revenue by Category Chart (Pie Chart)
+                                                                const revenueByCategoryCtx = document.getElementById('revenueByCategoryChart').getContext('2d');
+                                                                const revenueByCategoryChart = new Chart(revenueByCategoryCtx, {
+                                                                    type: 'pie',
+                                                                    data: {
+                                                                        labels: ['Bouquets', 'Single Stems', 'Arrangements', 'Baskets'],
+                                                                        datasets: [{
+                                                                                data: [18750, 12300, 9800, 7900],
+                                                                                backgroundColor: [
+                                                                                    '#4FD1C7',
+                                                                                    '#F093FB',
+                                                                                    '#FF6B6B',
+                                                                                    '#4ECDC4'
+                                                                                ],
+                                                                                borderWidth: 2,
+                                                                                borderColor: '#ffffff'
+                                                                            }]
+                                                                    },
+                                                                    options: {
+                                                                        responsive: true,
+                                                                        maintainAspectRatio: false,
+                                                                        plugins: {
+                                                                            legend: {
+                                                                                position: 'bottom',
+                                                                                labels: {
+                                                                                    padding: 15,
+                                                                                    font: {
+                                                                                        size: 11
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            tooltip: {
+                                                                                callbacks: {
+                                                                                    label: function (context) {
+                                                                                        return context.label + ': ₹' + context.parsed.toLocaleString();
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                                // Monthly Comparison Chart (Bar Chart)
+                                                                const monthlyComparisonCtx = document.getElementById('monthlyComparisonChart').getContext('2d');
+                                                                const monthlyComparisonChart = new Chart(monthlyComparisonCtx, {
+                                                                    type: 'bar',
+                                                                    data: {
+                                                                        labels: ['May', 'June', 'July'],
+                                                                        datasets: [{
+                                                                                label: 'Revenue',
+                                                                                data: [35000, 42000, 48750],
+                                                                                backgroundColor: [
+                                                                                    'rgba(79, 209, 199, 0.8)',
+                                                                                    'rgba(240, 147, 251, 0.8)',
+                                                                                    'rgba(255, 107, 107, 0.8)'
+                                                                                ],
+                                                                                borderColor: [
+                                                                                    '#4FD1C7',
+                                                                                    '#F093FB',
+                                                                                    '#FF6B6B'
+                                                                                ],
+                                                                                borderWidth: 2,
+                                                                                borderRadius: 8,
+                                                                                borderSkipped: false
+                                                                            }]
+                                                                    },
+                                                                    options: {
+                                                                        responsive: true,
+                                                                        maintainAspectRatio: false,
+                                                                        plugins: {
+                                                                            legend: {
+                                                                                display: false
+                                                                            }
+                                                                        },
+                                                                        scales: {
+                                                                            y: {
+                                                                                beginAtZero: true,
+                                                                                ticks: {
+                                                                                    callback: function (value) {
+                                                                                        return '₹' + (value / 1000) + 'K';
+                                                                                    }
+                                                                                },
+                                                                                grid: {
+                                                                                    color: 'rgba(0,0,0,0.1)'
+                                                                                }
+                                                                            },
+                                                                            x: {
+                                                                                grid: {
+                                                                                    display: false
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            // Initialize page
+                                                            document.addEventListener('DOMContentLoaded', function () {
+                                                                console.log('🌸 Responsive Admin Dashboard loaded successfully!');
+
+                                                                // Set initial mobile title
+                                                                const activeTab = document.querySelector('.nav-link.active');
+                                                                if (activeTab && mobileTitle) {
+                                                                    mobileTitle.textContent = activeTab.textContent.trim();
+                                                                }
+
+                                                                // Initialize charts when Analytics tab is first clicked
+                                                                let chartsInitialized = false;
+                                                                const analyticsTab = document.getElementById('analytics-tab');
+                                                                if (analyticsTab) {
+                                                                    analyticsTab.addEventListener('click', function () {
+                                                                        if (!chartsInitialized) {
+                                                                            setTimeout(() => {
+                                                                                initializeCharts();
+                                                                                chartsInitialized = true;
+                                                                            }, 100);
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                // Enhanced mobile features
+                                                                initializeMobileFeatures();
+                                                            });
+
+                                                            // Enhanced Mobile Features
+                                                            function initializeMobileFeatures() {
+                                                                // Add loading states to buttons
+                                                                const buttons = document.querySelectorAll('.btn-modern');
+                                                                buttons.forEach(button => {
+                                                                    button.addEventListener('click', function () {
+                                                                        if (window.innerWidth <= 768) {
+                                                                            this.classList.add('loading');
+                                                                            setTimeout(() => {
+                                                                                this.classList.remove('loading');
+                                                                            }, 1500);
+                                                                        }
+                                                                    });
+                                                                });
+
+                                                                // Enhanced touch feedback for mobile cards
+                                                                const cards = document.querySelectorAll('.card');
+                                                                cards.forEach(card => {
+                                                                    card.addEventListener('touchstart', function () {
+                                                                        if (window.innerWidth <= 768) {
+                                                                            this.style.transform = 'scale(0.98)';
+                                                                        }
+                                                                    });
+
+                                                                    card.addEventListener('touchend', function () {
+                                                                        if (window.innerWidth <= 768) {
+                                                                            setTimeout(() => {
+                                                                                this.style.transform = '';
+                                                                            }, 150);
+                                                                        }
+                                                                    });
+                                                                });
+
+                                                                // Mobile swipe gesture support for sidebar
+                                                                let startX = 0;
+                                                                let currentX = 0;
+                                                                let isSwiping = false;
+
+                                                                document.addEventListener('touchstart', function (e) {
+                                                                    if (window.innerWidth <= 768) {
+                                                                        startX = e.touches[0].clientX;
+                                                                        isSwiping = true;
+                                                                    }
+                                                                });
+
+                                                                document.addEventListener('touchmove', function (e) {
+                                                                    if (!isSwiping || window.innerWidth > 768)
+                                                                        return;
+
+                                                                    currentX = e.touches[0].clientX;
+                                                                    const diffX = currentX - startX;
+
+                                                                    // Swipe right to open sidebar (from left edge)
+                                                                    if (startX < 20 && diffX > 50) {
+                                                                        sidebar.classList.add('show');
+                                                                        sidebarOverlay.classList.add('show');
+                                                                    }
+
+                                                                    // Swipe left to close sidebar
+                                                                    if (sidebar.classList.contains('show') && diffX < -50) {
+                                                                        sidebar.classList.remove('show');
+                                                                        sidebarOverlay.classList.remove('show');
+                                                                    }
+                                                                });
+
+                                                                document.addEventListener('touchend', function () {
+                                                                    isSwiping = false;
+                                                                });
+
+                                                                // Enhanced form validation feedback for mobile
+                                                                const formInputs = document.querySelectorAll('.form-control');
+                                                                formInputs.forEach(input => {
+                                                                    input.addEventListener('blur', function () {
+                                                                        if (window.innerWidth <= 768) {
+                                                                            if (this.value.trim() !== '') {
+                                                                                this.style.borderColor = '#48BB78';
+                                                                                this.style.borderWidth = '2px';
+                                                                            } else if (this.hasAttribute('required')) {
+                                                                                this.style.borderColor = '#F56565';
+                                                                                this.style.borderWidth = '2px';
+                                                                            }
+                                                                        }
+                                                                    });
+
+                                                                    input.addEventListener('focus', function () {
+                                                                        if (window.innerWidth <= 768) {
+                                                                            this.style.borderColor = '#4FD1C7';
+                                                                            this.style.borderWidth = '2px';
+
+                                                                            // Smooth scroll to focused input on mobile
+                                                                            setTimeout(() => {
+                                                                                this.scrollIntoView({
+                                                                                    behavior: 'smooth',
+                                                                                    block: 'center'
+                                                                                });
+                                                                            }, 300);
+                                                                        }
+                                                                    });
+                                                                });
+
+                                                                // Mobile orientation change handler
+                                                                window.addEventListener('orientationchange', function () {
+                                                                    setTimeout(() => {
+                                                                        // Close sidebar on orientation change
+                                                                        if (sidebar.classList.contains('show')) {
+                                                                            sidebar.classList.remove('show');
+                                                                            sidebarOverlay.classList.remove('show');
+                                                                        }
+
+                                                                        // Refresh chart responsiveness
+                                                                        if (window.Chart) {
+                                                                            Chart.helpers.each(Chart.instances, function (instance) {
+                                                                                instance.resize();
+                                                                            });
+                                                                        }
+                                                                    }, 100);
+                                                                });
+
+                                                                // Add offline indicator
+                                                                function updateOnlineStatus() {
+                                                                    const offlineIndicator = document.getElementById('offlineIndicator') || createOfflineIndicator();
+
+                                                                    if (!navigator.onLine) {
+                                                                        offlineIndicator.classList.add('show');
+                                                                    } else {
+                                                                        offlineIndicator.classList.remove('show');
+                                                                    }
+                                                                }
+
+                                                                function createOfflineIndicator() {
+                                                                    const indicator = document.createElement('div');
+                                                                    indicator.id = 'offlineIndicator';
+                                                                    indicator.className = 'offline-indicator';
+                                                                    indicator.innerHTML = '<i class="fas fa-wifi"></i> You are offline. Some features may not work.';
+                                                                    document.body.appendChild(indicator);
+                                                                    return indicator;
+                                                                }
+
+                                                                window.addEventListener('online', updateOnlineStatus);
+                                                                window.addEventListener('offline', updateOnlineStatus);
+                                                                updateOnlineStatus();
+
+                                                                // Enhanced mobile table interactions
+                                                                const tableRows = document.querySelectorAll('.table tbody tr');
+                                                                tableRows.forEach(row => {
+                                                                    row.addEventListener('touchstart', function () {
+                                                                        if (window.innerWidth <= 768) {
+                                                                            this.style.backgroundColor = 'rgba(79, 209, 199, 0.1)';
+                                                                        }
+                                                                    });
+
+                                                                    row.addEventListener('touchend', function () {
+                                                                        if (window.innerWidth <= 768) {
+                                                                            setTimeout(() => {
+                                                                                this.style.backgroundColor = '';
+                                                                            }, 200);
+                                                                        }
+                                                                    });
+                                                                });
+
+                                                                // Mobile viewport height fix for iOS
+                                                                function setMobileViewportHeight() {
+                                                                    if (window.innerWidth <= 768) {
+                                                                        const vh = window.innerHeight * 0.01;
+                                                                        document.documentElement.style.setProperty('--vh', `${vh}px`);
+                                                                    }
+                                                                }
+
+                                                                setMobileViewportHeight();
+                                                                window.addEventListener('resize', setMobileViewportHeight);
+                                                                window.addEventListener('orientationchange', () => {
+                                                                    setTimeout(setMobileViewportHeight, 100);
+                                                                });
+
+                                                                console.log('📱 Enhanced mobile features initialized!');
+                                                            }
+        </script>
+
+
+        <script src="assets/js/my-account.js"></script>
+        <script src="assets/js/product-listing.js"></script>
+        <script src="assets/js/loadOrders.js"></script>
+        <script src="assets/js/ProductInventory.js"></script>
+        <script src="assets/js/Analytics.js"></script>
+
+        <script src="assets/js/notification.js"></script>
+        <script src="assets/js/sign-out.js"></script>
+        <script src="assets/js/my-account.js"></script>
+        <script src="assets/js/product-listing.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </body>
+
+</html>

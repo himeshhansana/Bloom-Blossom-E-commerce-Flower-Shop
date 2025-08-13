@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Account - Bloom & Blossom</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./assets/css/dashboard.css">
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/flowerlogo.png">
+
+        <style>
+            /* Root Variables - Matching Index.html */
+            :root {
+                --primary-color: #2D3748;
+                --secondary-color: #4FD1C7;
+                --accent-color: #F093FB;
+                --text-primary: #2D3748;
+                --text-secondary: #718096;
+                --bg-light: #F7FAFC;
+                --bg-white: #FFFFFF;
+                --border-color: #E2E8F0;
+                --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Dashboard Page Specific Styles */
+            .dashboard-page {
+                font-family: 'Inter', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #f5576c 60%, #4facfe 80%, #00f2fe 100%);
+                min-height: 100vh;
+                line-height: 1.6;
+                color: var(--text-primary);
+                overflow-x: hidden;
+                display: block;
+                align-items: initial;
+                justify-content: initial;
+                padding: 0;
+            }
+
+            /* Navigation Bar - Matching Index.html */
+            .navbar {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                transition: all 0.3s ease;
+            }
+
+            .nav-container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 0 2rem;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                height: 80px;
+                position: relative;
+                gap: 4rem;
+            }
+
+            .logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                flex-shrink: 0;
+            }
+
+            .logo i {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2.5rem;
+            }
+
+            .nav-menu {
+                display: flex;
+                list-style: none;
+                gap: 2.5rem;
+                align-items: center;
+                margin-left: auto;
+                margin-right: 2rem;
+            }
+
+            .nav-menu a {
+                text-decoration: none;
+                color: var(--text-primary);
+                font-weight: 500;
+                font-size: 0.95rem;
+                position: relative;
+                transition: all 0.3s ease;
+                padding: 0.5rem 0;
+            }
+
+            .nav-menu a::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                transition: width 0.3s ease;
+            }
+
+            .nav-menu a:hover::after {
+                width: 100%;
+            }
+
+            .nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                flex-shrink: 0;
+            }
+
+            .search-container {
+                position: relative;
+            }
+
+            .search-box {
+                background: rgba(247, 250, 252, 0.9);
+                border: 2px solid var(--border-color);
+                border-radius: 50px;
+                padding: 0.75rem 1.5rem;
+                width: 280px;
+                outline: none;
+                transition: all 0.3s ease;
+                font-size: 0.9rem;
+            }
+
+            .search-box:focus {
+                border-color: var(--secondary-color);
+                background: white;
+                box-shadow: 0 0 0 4px rgba(79, 209, 199, 0.1);
+            }
+
+            .search-icon {
+                position: absolute;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-secondary);
+                pointer-events: none;
+            }
+
+            .cart-btn {
+                position: relative;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0.75rem;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+                font-size: 1.2rem;
+            }
+
+            .cart-btn:hover {
+                background: rgba(79, 209, 199, 0.1);
+                transform: translateY(-2px);
+            }
+
+            .cart-count {
+                position: absolute;
+                top: 0.25rem;
+                right: 0.25rem;
+                background: linear-gradient(45deg, #F093FB, #F5576C);
+                color: white;
+                border-radius: 50%;
+                width: 1.25rem;
+                height: 1.25rem;
+                font-size: 0.7rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+            }
+
+            .user-btn {
+                background: rgba(79, 209, 199, 0.1);
+                border: 2px solid transparent;
+                cursor: pointer;
+                padding: 0.75rem;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 45px;
+                height: 45px;
+            }
+
+            .user-btn:hover {
+                background: rgba(79, 209, 199, 0.2);
+                transform: translateY(-2px);
+                border-color: var(--secondary-color);
+                box-shadow: 0 4px 12px rgba(79, 209, 199, 0.3);
+            }
+
+            .user-btn.active {
+                background: var(--secondary-color);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(79, 209, 199, 0.4);
+            }
+
+            /* User Dropdown Styles */
+            .user-dropdown {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: calc(100% + 10px);
+                right: 0;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                border: 1px solid var(--border-color);
+                min-width: 220px;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+            }
+
+            .dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .dropdown-menu::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                right: 15px;
+                width: 16px;
+                height: 16px;
+                background: white;
+                border: 1px solid var(--border-color);
+                border-bottom: none;
+                border-right: none;
+                transform: rotate(45deg);
+            }
+
+            .dropdown-header {
+                padding: 20px 20px 15px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .dropdown-header h4 {
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--text-primary);
+                margin-bottom: 4px;
+            }
+
+            .dropdown-header p {
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+                margin: 0;
+            }
+
+            .dropdown-content {
+                padding: 10px 0;
+            }
+
+            .dropdown-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 20px;
+                text-decoration: none;
+                color: var(--text-primary);
+                font-size: 0.9rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                border: none;
+                background: none;
+                width: 100%;
+                text-align: left;
+                cursor: pointer;
+            }
+
+            .dropdown-item:hover {
+                background: rgba(79, 209, 199, 0.08);
+                color: var(--secondary-color);
+            }
+
+            .dropdown-item.active {
+                background: rgba(79, 209, 199, 0.08);
+                color: var(--secondary-color);
+            }
+
+            .dropdown-item.danger {
+                color: #E53E3E;
+            }
+
+            .dropdown-item.danger:hover {
+                background: rgba(229, 62, 62, 0.08);
+                color: #E53E3E;
+            }
+
+            .dropdown-item i {
+                width: 16px;
+                text-align: center;
+                color: var(--text-secondary);
+                transition: color 0.2s ease;
+            }
+
+            .dropdown-item:hover i {
+                color: var(--secondary-color);
+            }
+
+            .dropdown-item.danger:hover i {
+                color: #E53E3E;
+            }
+
+            .dropdown-divider {
+                height: 1px;
+                background: var(--border-color);
+                margin: 8px 0;
+            }
+
+            /* Touch device improvements */
+            @media (hover: none) and (pointer: coarse) {
+                .dropdown-item:hover {
+                    background: rgba(102, 126, 234, 0.08);
+                    transform: none;
+                }
+
+                .user-btn:hover {
+                    background: rgba(79, 209, 199, 0.1);
+                    transform: none;
+                }
+            }
+
+            /* High contrast mode support */
+            @media (prefers-contrast: high) {
+                .dropdown-menu {
+                    border: 2px solid #000;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                }
+
+                .dropdown-item:hover {
+                    background: #000;
+                    color: #fff;
+                }
+            }
+
+            /* Dashboard Container */
+            .dashboard-container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 2rem;
+                min-height: 100vh;
+                margin-top: 80px;
+            }
+
+            /* Footer - Matching Index.html */
+            .footer {
+                background: linear-gradient(135deg, var(--primary-color), #1a202c);
+                color: white;
+                padding: 4rem 2rem 2rem;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .footer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:white;stop-opacity:0.03"/><stop offset="100%" style="stop-color:transparent;stop-opacity:0"/></radialGradient></defs><circle cx="100" cy="100" r="2" fill="url(%23grad)"/><circle cx="900" cy="200" r="1.5" fill="url(%23grad)"/><circle cx="300" cy="800" r="2.5" fill="url(%23grad)"/><circle cx="700" cy="600" r="2" fill="url(%23grad)"/></svg>') repeat;
+                opacity: 0.8;
+            }
+
+            .footer-content {
+                max-width: 1400px;
+                margin: 0 auto;
+                position: relative;
+                z-index: 2;
+            }
+
+            .footer-main {
+                display: grid;
+                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+                gap: 3rem;
+                margin-bottom: 3rem;
+            }
+
+            .footer-brand {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .footer-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 700;
+                color: white;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .footer-logo i {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2.5rem;
+            }
+
+            .footer-desc {
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.6;
+                max-width: 300px;
+            }
+
+            .social-links {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .social-link:hover {
+                background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(79, 209, 199, 0.3);
+            }
+
+            .footer-section h3 {
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                color: white;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .footer-links a {
+                color: rgba(255, 255, 255, 0.7);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
+            }
+
+            .footer-links a:hover {
+                color: var(--secondary-color);
+                transform: translateX(5px);
+            }
+
+            .footer-bottom {
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding-top: 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .footer-bottom p {
+                color: rgba(255, 255, 255, 0.6);
+                margin: 0;
+            }
+
+            .footer-bottom-links {
+                display: flex;
+                gap: 2rem;
+            }
+
+            .footer-bottom-links a {
+                color: rgba(255, 255, 255, 0.6);
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: color 0.3s ease;
+            }
+
+            .footer-bottom-links a:hover {
+                color: var(--secondary-color);
+            }
+
+            /* Responsive Design */
+            @media (max-width: 1200px) {
+                .dashboard-container {
+                    padding: 1.5rem;
+                }
+
+                .nav-container {
+                    padding: 0 1.5rem;
+                }
+            }
+
+            @media (max-width: 1024px) {
+                .footer-main {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 2rem;
+                }
+            }
+
+            @media (max-width: 992px) {
+                .dashboard-container {
+                    padding: 1rem;
+                    margin-top: 70px;
+                }
+
+                .nav-container {
+                    padding: 0 1rem;
+                }
+
+                .logo {
+                    font-size: 1.8rem;
+                }
+
+                .logo i {
+                    font-size: 2.2rem;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .dashboard-container {
+                    padding: 0.5rem;
+                    margin-top: 60px;
+                }
+
+                .nav-container {
+                    padding: 0 0.5rem;
+                    flex-direction: row;
+                    height: 60px;
+                    padding-bottom: 0;
+                }
+
+                .footer {
+                    padding: 3rem 1rem 2rem;
+                }
+
+                .footer-main {
+                    grid-template-columns: 1fr;
+                    gap: 2rem;
+                    text-align: center;
+                }
+
+                .footer-brand {
+                    align-items: center;
+                }
+
+                .footer-bottom {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .footer-bottom-links {
+                    justify-content: center;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .dashboard-container {
+                    padding: 0.25rem;
+                }
+
+                .nav-container {
+                    padding: 0 0.25rem;
+                }
+
+                .logo {
+                    font-size: 1.5rem;
+                }
+
+                .logo i {
+                    font-size: 1.8rem;
+                }
+
+                .footer-bottom-links {
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+            }
+
+            /* Mobile Navigation Menu */
+            .mobile-menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--primary-color);
+                cursor: pointer;
+                padding: 0.5rem;
+                margin-left: auto;
+            }
+
+            @media (max-width: 768px) {
+                .nav-container {
+                    justify-content: space-between;
+                    gap: 1rem;
+                }
+
+                .mobile-menu-toggle {
+                    display: block;
+                }
+
+                .nav-menu {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: rgba(255, 255, 255, 0.98);
+                    backdrop-filter: blur(20px);
+                    border-top: 1px solid rgba(0, 0, 0, 0.1);
+                    padding: 1rem 0;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                    margin-left: 0;
+                    margin-right: 0;
+                }
+
+                .nav-menu.show {
+                    display: flex;
+                }
+
+                .nav-menu a {
+                    padding: 0.75rem 2rem;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    transition: all 0.3s ease;
+                }
+
+                .nav-menu a:hover {
+                    background: rgba(102, 126, 234, 0.1);
+                }
+
+                .nav-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                }
+
+                .search-container {
+                    display: none;
+                }
+
+                .cart-btn {
+                    display: none;
+                }
+
+                /* Mobile User Dropdown */
+                .dropdown-menu {
+                    right: -1rem;
+                    min-width: 200px;
+                    max-width: calc(100vw - 2rem);
+                }
+
+                .dropdown-header {
+                    padding: 15px 15px 10px;
+                }
+
+                .dropdown-item {
+                    padding: 10px 15px;
+                    font-size: 0.85rem;
+                }
+            }
+
+            @media (max-width: 992px) {
+                .nav-container {
+                    gap: 2rem;
+                }
+
+                .nav-menu {
+                    margin-right: 1rem;
+                }
+            }
+
+            @media (max-width: 1024px) {
+                .nav-container {
+                    gap: 3rem;
+                }
+
+                .nav-menu {
+                    gap: 2rem;
+                }
+            }
+
+            /* Form Responsiveness */
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-control {
+                padding: 0.75rem 1rem;
+                border: 2px solid #e5e7eb;
+                border-radius: 12px;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                background: #ffffff;
+            }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            @media (max-width: 576px) {
+                .form-control {
+                    font-size: 16px; /* Prevents zoom on iOS */
+                    padding: 0.625rem 0.875rem;
+                }
+            }
+
+            /* Button Fixes */
+            .btn-modern {
+                padding: 0.75rem 1.5rem;
+                border-radius: 12px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.95rem;
+            }
+
+            .btn-modern.btn-success {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+            }
+
+            .btn-modern.btn-success:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            }
+
+            @media (max-width: 576px) {
+                .btn-modern {
+                    padding: 0.625rem 1.25rem;
+                    font-size: 0.9rem;
+                }
+            }
+
+            /* Table Responsiveness */
+            .table-responsive {
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                overflow-x: auto;
+            }
+
+            .table-modern {
+                margin-bottom: 0;
+                min-width: 600px;
+            }
+
+            .table-modern th,
+            .table-modern td {
+                padding: 1rem;
+                vertical-align: middle;
+                border-bottom: 1px solid #f3f4f6;
+                white-space: nowrap;
+            }
+
+            .table-modern thead th {
+                background: #f9fafb;
+                font-weight: 600;
+                color: #374151;
+                border-bottom: 2px solid #e5e7eb;
+            }
+
+            @media (max-width: 768px) {
+                .table-modern {
+                    min-width: 800px;
+                }
+
+                .table-modern th,
+                .table-modern td {
+                    padding: 0.75rem 0.5rem;
+                    font-size: 0.875rem;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .table-modern {
+                    min-width: 900px;
+                }
+
+                .table-modern th,
+                .table-modern td {
+                    padding: 0.5rem 0.25rem;
+                    font-size: 0.8rem;
+                }
+
+                .table-modern .btn-modern {
+                    padding: 0.375rem 0.75rem;
+                    font-size: 0.75rem;
+                    margin: 0.125rem;
+                }
+            }
+
+            /* File Upload Responsiveness */
+            .file-upload {
+                border: 2px dashed #d1d5db;
+                border-radius: 12px;
+                padding: 1.5rem;
+                text-align: center;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+
+            .file-upload:hover {
+                border-color: #667eea;
+                background: rgba(102, 126, 234, 0.05);
+            }
+
+            .file-upload input[type="file"] {
+                display: none;
+            }
+
+            .file-upload-label {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                color: #6b7280;
+            }
+
+            .file-upload-label i {
+                font-size: 2rem;
+                color: #9ca3af;
+            }
+
+            @media (max-width: 576px) {
+                .file-upload {
+                    padding: 1rem;
+                }
+
+                .file-upload-label i {
+                    font-size: 1.5rem;
+                }
+
+                .file-upload-label span {
+                    font-size: 0.875rem;
+                }
+            }
+
+            /* Alert Responsiveness */
+            .alert-modern {
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                border: none;
+                margin-bottom: 1.5rem;
+                font-weight: 500;
+            }
+
+            .alert-modern.alert-danger {
+                background: #fef2f2;
+                color: #dc2626;
+                border-left: 4px solid #dc2626;
+            }
+
+            @media (max-width: 576px) {
+                .alert-modern {
+                    padding: 0.75rem 1rem;
+                    font-size: 0.875rem;
+                }
+            }
+
+            /* Page Title */
+            .page-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #1f2937;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .page-title i {
+                color: #667eea;
+            }
+
+            @media (max-width: 768px) {
+                .page-title {
+                    font-size: 1.25rem;
+                    margin-bottom: 1rem;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .page-title {
+                    font-size: 1.1rem;
+                }
+            }
+
+            /* Grid System Fix */
+            .row {
+                margin-left: -0.75rem;
+                margin-right: -0.75rem;
+            }
+
+            .row > * {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
+            @media (max-width: 576px) {
+                .row {
+                    margin-left: -0.5rem;
+                    margin-right: -0.5rem;
+                }
+
+                .row > * {
+                    padding-left: 0.5rem;
+                    padding-right: 0.5rem;
+                }
+            }
+
+            /* Logout Button */
+            .logout-btn {
+                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: 12px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .logout-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+            }
+
+            /* Loading States */
+            .loading {
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-top: 2px solid white;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Accessibility */
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            }
+
+            /* Focus Visible */
+            .focus-visible {
+                outline: 2px solid #667eea;
+                outline-offset: 2px;
+            }
+
+            /* Print Styles */
+            @media print {
+                .navbar, .logout-btn {
+                    display: none !important;
+                }
+
+                .dashboard-container {
+                    margin-top: 0;
+                    padding: 0;
+                }
+
+                .dashboard-header,
+                .dashboard-content {
+                    box-shadow: none;
+                    border: 1px solid #ccc;
+                }
+            }
+        </style>
+
+    </head>
+
+    <body class="dashboard-page" onload="loadProductData();loadData();">
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <!--header and nav bar load in content jsfile-->
+        </nav>
+        <!-- Navigation -->
+
+        <!-- Dashboard Container -->
+        <div class="dashboard-container">
+            <!-- Header Section -->
+            <div class="dashboard-header">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <img src="./assets/images/avatar.png" alt="Profile"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fas fa-user&quot;></i>';">
+                    </div>
+                    <div class="user-info">
+                        <h2 id="username">Hello, Welcome Back!</h2>
+                        <p id="since">Bloom & Blossom Member Since Sep 2024</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <ul class="nav nav-tabs nav-tabs-modern" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="account-tab" data-bs-toggle="tab" data-bs-target="#account"
+                                type="button" role="tab" aria-controls="account" aria-selected="true">
+                            <i class="fas fa-user"></i> Account Details
+                        </button>
+                        <p id="message" style="text-align: center; font-weight: bold; color: red;  margin: 20px auto;"></p>
+                    </li>
+                    <!--                    <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="add-product-tab" data-bs-toggle="tab" data-bs-target="#add-product"
+                                                    type="button" role="tab" aria-controls="add-product" aria-selected="false">
+                                                <i class="fas fa-plus-circle"></i> Add Product
+                                            </button>
+                                            <p id="message" style="text-align: center; font-weight: bold; color: red;  margin: 20px auto;"></p>
+                                        </li>-->
+                    <!--                    <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products"
+                                                    type="button" role="tab" aria-controls="products" aria-selected="false">
+                                                <i class="fas fa-list"></i> Product Listing
+                                            </button>
+                                            <p id="message" style="text-align: center; font-weight: bold; color: red;  margin: 20px auto;"></p>
+                                        </li>-->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button"
+                                role="tab" aria-controls="orders" aria-selected="false">
+                            <i class="fas fa-shopping-cart"></i> Orders
+                        </button>
+                        <p id="message" style="text-align: center; font-weight: bold; color: red;  margin: 20px auto;"></p>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="address-tab" data-bs-toggle="tab" data-bs-target="#address"
+                                type="button" role="tab" aria-controls="address" aria-selected="false">
+                            <i class="fas fa-map-marker-alt"></i> Address
+                        </button>
+                        <p id="message" style="text-align: center; font-weight: bold; color: red;  margin: 20px auto;"></p>
+                    </li>
+
+                    <li class="nav-item" role="presentation">
+                        <button class="logout-btn" onclick="signOut();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Content Area -->
+            <div class="dashboard-content">
+                <div class="tab-content" id="myTabContent">
+                    <!-- Account Details Tab -->
+                    <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+                        <div class="page-title">
+                            <i class="fas fa-user-edit"></i>
+                            Account Details
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" class="form-control" id="firstName"
+                                           placeholder="Enter your first name">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName"
+                                           placeholder="Enter your last name">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="lineOne">Address Line 1</label>
+                                    <input type="text" class="form-control" id="lineOne" placeholder="Enter your address">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="lineTwo">Address Line 2</label>
+                                    <input type="text" class="form-control" id="lineTwo"
+                                           placeholder="Apartment, suite, etc.">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="postalCode">Postal Code</label>
+                                    <input type="text" class="form-control" id="postalCode" placeholder="Enter postal code">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="citySelect">City</label>
+                                    <select class="form-control" id="citySelect">
+                                        <option value="0">Select City</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="page-title mt-4">
+                                    <i class="fas fa-lock"></i>
+                                    Password Change
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="currentPassword">Current Password</label>
+                                            <input type="password" class="form-control" id="currentPassword"
+                                                   placeholder="Enter current password">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="newPassword">New Password</label>
+                                            <input type="password" class="form-control" id="newPassword"
+                                                   placeholder="Enter new password">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="confirmPassword">Confirm New Password</label>
+                                            <input type="password" class="form-control" id="confirmPassword"
+                                                   placeholder="Confirm new password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="alert-modern alert-danger" id="message" style="display: none;"></div>
+                                <button class="btn-modern btn-success" onclick="saveChanges();">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Product Tab -->
+                    <div class="tab-pane fade" id="add-product" role="tabpanel" aria-labelledby="add-product-tab">
+                        <div class="page-title">
+                            <i class="fas fa-plus-circle"></i>
+                            Create New Product
+                            <p id="message" style="text-align: center; font-weight: bold; color: red;  margin: 20px auto;"></p>
+                        </div>
+
+                        <div class="alert-modern alert-danger" id="productMessage" style="display: none;"></div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="brand">Flowers Category</label>
+                                    <select class="form-control" id="flowers_category" onchange="loadModels();">
+                                        <option value="0">Select Flowers Category</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="model">Flowers Type</label>
+                                    <select class="form-control" id="flower_type">
+                                        <option value="0">Select Flowers Type</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter product title">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" id="description" rows="4"
+                                              placeholder="Enter product description"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="storage">size</label>
+                                    <select class="form-control" id="size">
+                                        <option value="0">Select size</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="color">Color</label>
+                                    <select class="form-control" id="color">
+                                        <option value="0">Select Color</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="condition">Condition</label>
+                                    <select class="form-control" id="freshness">
+                                        <option value="0">Select Condition</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="price">Price</label>
+                                    <input type="text" class="form-control" id="price" pattern="^\d+(\.\d{2})?$"
+                                           placeholder="0.00">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="qty">Quantity</label>
+                                    <input type="number" class="form-control" id="qty" min="1" value="1">
+                                </div>
+                            </div>           
+
+                            <div class="col-lg-4">
+                                <label>Image 1</label>
+                                <input id="img1" class="form-control b2" type="file" accept="image/*">
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label>Image 2</label>
+                                <input id="img2"  class="form-control b2" type="file" accept="image/*">
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label>Image 3</label>
+                                <input  id="img3"  class="form-control b2" type="file" accept="image/*">
+                            </div>
+
+                            <div class="col-12" style="margin-top: 20px">
+                                <button class="btn-modern btn-success" onclick="saveProduct();">
+                                    <i class="fas fa-plus"></i> Add Product To Listing
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Listing Tab -->
+                    <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+                        <div class="page-title">
+                            <i class="fas fa-list"></i>
+                            Product Listing
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-modern">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productTableBody">
+                                    <tr>
+                                        <td><strong>#FL001</strong></td>
+                                        <td>Beautiful Rose Bouquet</td>
+                                        <td><strong>$45.99</strong></td>
+                                        <td>5</td>
+                                        <td>November 15, 2024</td>
+                                        <td>
+                                            <button class="btn-modern btn-outline btn-sm">
+                                                <i class="fas fa-eye"></i> View
+                                            </button>
+                                            <button class="btn-modern btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn-modern btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#FL002</strong></td>
+                                        <td>Sunflower Arrangement</td>
+                                        <td><strong>$32.50</strong></td>
+                                        <td>3</td>
+                                        <td>November 10, 2024</td>
+                                        <td>
+                                            <button class="btn-modern btn-outline btn-sm">
+                                                <i class="fas fa-eye"></i> View
+                                            </button>
+                                            <button class="btn-modern btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="btn-modern btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Orders Tab -->
+                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                        <div class="page-title">
+                            <i class="fas fa-shopping-cart"></i>
+                            Orders
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-modern">
+                                <thead>
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Product</th>
+                                        <th>Order ID</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Address Tab -->
+                    <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                        <div class="page-title">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Current Shipping Address
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="dashboard-content">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h5 class="mb-0">Shipping Information</h5>
+                                        <button class="btn-modern btn-outline">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                    </div>
+
+                                    <div class="row" id="addressUL">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-user text-primary me-2"></i>Name</label>
+                                                <p class="form-control-plaintext" id="addName">Name</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-envelope text-primary me-2"></i>Email</label>
+                                                <p class="form-control-plaintext" id="addEmail">example@email.com</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label><i class="fas fa-phone text-primary me-2"></i>Phone</label>
+                                                <p class="form-control-plaintext" id="contact">Phone Number</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="dashboard-content">
+                                    <h6 class="mb-3">Quick Actions</h6>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn-modern btn-outline">
+                                            <i class="fas fa-plus"></i> Add New Address
+                                        </button>
+                                        <button class="btn-modern btn-outline">
+                                            <i class="fas fa-history"></i> Address History
+                                        </button>
+                                        <button class="btn-modern btn-outline">
+                                            <i class="fas fa-map"></i> Set as Default
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Dashboard JS -->
+        <script src="./assets/js/dashboard.js"></script>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <!--footer session load in content load jsfile-->
+        </footer>
+        <!-- Footer -->
+
+
+
+        <script>
+                                    // Mobile menu toggle
+                                    function toggleMobileMenu() {
+                                        const navMenu = document.getElementById('navMenu');
+                                        navMenu.classList.toggle('show');
+                                    }
+
+                                    // Responsive navigation adjustments
+                                    function adjustNavigation() {
+                                        const navMenu = document.getElementById('navMenu');
+                                        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+
+                                        if (window.innerWidth <= 768) {
+                                            navMenu.style.display = navMenu.classList.contains('show') ? 'flex' : 'none';
+                                        } else {
+                                            navMenu.style.display = 'flex';
+                                            navMenu.classList.remove('show');
+                                        }
+                                    }
+
+                                    // User Dropdown Functionality
+                                    function toggleUserDropdown() {
+                                        const dropdown = document.getElementById('userDropdown');
+                                        dropdown.classList.toggle('show');
+                                    }
+
+                                    // Mobile Menu Toggle
+                                    function toggleMobileMenu() {
+                                        const navMenu = document.getElementById('navMenu');
+                                        navMenu.classList.toggle('show');
+                                    }
+
+                                    // Cart Toggle (placeholder)
+                                    function toggleCart() {
+                                        // Add cart functionality here
+                                        console.log('Cart clicked');
+                                    }
+
+                                    // Close dropdowns when clicking outside
+                                    document.addEventListener('click', function (event) {
+                                        const userDropdown = document.getElementById('userDropdown');
+                                        const userBtn = document.getElementById('userBtn');
+                                        const navMenu = document.getElementById('navMenu');
+                                        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+
+                                        // Close user dropdown if clicking outside
+                                        if (!userBtn.contains(event.target) && !userDropdown.contains(event.target)) {
+                                            userDropdown.classList.remove('show');
+                                        }
+
+                                        // Close mobile menu if clicking outside
+                                        if (!mobileToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                                            navMenu.classList.remove('show');
+                                        }
+                                    });
+
+                                    // Prevent dropdown from closing when clicking inside it
+                                    document.getElementById('userDropdown').addEventListener('click', function (event) {
+                                        event.stopPropagation();
+                                    });
+
+                                    // Handle dropdown item clicks
+                                    document.querySelectorAll('.dropdown-item').forEach(item => {
+                                        item.addEventListener('click', function (e) {
+                                            if (this.getAttribute('href') === '#') {
+                                                e.preventDefault();
+
+                                                // Handle specific actions
+                                                const text = this.textContent.trim();
+                                                if (text === 'Sign Out') {
+                                                    if (confirm('Are you sure you want to sign out?')) {
+                                                        // Add sign out logic here
+                                                        window.location.href = 'sign-in.html';
+                                                    }
+                                                } else if (text === 'Wishlist') {
+                                                    // Add wishlist logic here
+                                                    console.log('Opening wishlist...');
+                                                } else if (text === 'My Orders') {
+                                                    // Add orders logic here
+                                                    console.log('Opening orders...');
+                                                } else if (text === 'Settings') {
+                                                    // Add settings logic here
+                                                    console.log('Opening settings...');
+                                                } else if (text === 'Support') {
+                                                    // Add support logic here
+                                                    console.log('Opening support...');
+                                                }
+                                            }
+                                        });
+                                    });
+        </script>
+
+        <!-- Main JS -->
+        <script src="assets/js/notification.js"></script>
+        <script src="assets/js/sign-out.js"></script>
+        <script src="assets/js/my-account.js"></script>
+        <script src="assets/js/product-listing.js"></script>
+        <script src="assets/js/content-loader.js"></script>
+        <script src="assets/js/UserloadOrders.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!--<script src="assets/js/sign-out.js"></script>-->
+
+    </body>
+
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/flowers?useSSL=false</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">ncbes7154hansana12H</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        
+        <mapping class="hibernate.User"/>
+        <mapping class="hibernate.City" />
+        <mapping class="hibernate.Address" />
+        <mapping class="hibernate.Color" />
+        <mapping class="hibernate.Status" />
+        
+        
+        <mapping class="hibernate.Flowers_category" /> 
+
+        <mapping class="hibernate.Flower_type" />         
+
+        <mapping class="hibernate.Freshness" />        
+
+        <mapping class="hibernate.Size" />
+        
+        <mapping class="hibernate.Product" />
+        
+        <mapping class="hibernate.Cart" />
+        
+        
+        <mapping class="hibernate.DeliveryType" />
+        <mapping class="hibernate.Orders" />
+        <mapping class="hibernate.OrderStatus" />
+        <mapping class="hibernate.OrderItems" />
+        
+        <mapping class="hibernate.Admin" />
+        <mapping class="hibernate.Wishlist" />
+        
+    </session-factory>
+</hibernate-configuration>
+

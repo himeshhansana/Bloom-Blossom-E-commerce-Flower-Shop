@@ -1,0 +1,768 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 1200px;
+    width: 100%;
+    min-height: 600px;
+    position: relative;
+}
+
+/* Header */
+.header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #666;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    color: #333;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ff6b9d, #ff8a9b);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+}
+
+/* Left Panel */
+.left-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-panel::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="floral" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23floral)"/></svg>') repeat;
+    opacity: 0.3;
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(10px, -10px) rotate(1deg); }
+    66% { transform: translate(-5px, 5px) rotate(-1deg); }
+}
+
+.left-content {
+    position: relative;
+    z-index: 2;
+}
+
+.left-panel h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.left-panel p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.illustration {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.flower-icon {
+    font-size: 120px;
+    color: rgba(255, 255, 255, 0.8);
+    animation: bloom 3s ease-in-out infinite;
+}
+
+@keyframes bloom {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+}
+
+/* Right Panel */
+.right-panel {
+    flex: 1;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-container {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.form-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.form-container .subtitle {
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-form {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-form:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-form:active {
+    transform: translateY(0);
+}
+
+.btn-form:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-links a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.form-links a:hover {
+    color: #764ba2;
+}
+
+/* Back Button */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 90%;
+        margin: 20px auto;
+    }
+    
+    .left-panel {
+        padding: 50px 30px;
+    }
+    
+    .right-panel {
+        padding: 50px 30px;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        max-width: 95%;
+        margin: 15px auto;
+    }
+    
+    .left-panel h2 {
+        font-size: 2.2rem;
+    }
+    
+    .left-panel p {
+        font-size: 1rem;
+    }
+    
+    .form-container h1 {
+        font-size: 1.8rem;
+    }
+    
+    .header {
+        padding: 0 15px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        font-size: 13px;
+        padding: 8px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        margin: 10px;
+        min-height: auto;
+        width: calc(100% - 20px);
+        border-radius: 15px;
+    }
+    
+    .header {
+        position: relative;
+        margin-bottom: 0;
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .header-buttons {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .left-panel {
+        padding: 30px 20px;
+        min-height: 250px;
+        border-radius: 0;
+    }
+    
+    .left-panel h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .left-panel p {
+        font-size: 0.95rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .right-panel {
+        padding: 30px 20px;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .form-container {
+        max-width: 100%;
+    }
+    
+    .form-container h1 {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+    }
+    
+    .form-container .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 25px;
+    }
+    
+    .flower-icon {
+        font-size: 60px;
+        margin-top: 20px;
+    }
+    
+    .illustration {
+        margin-top: 20px;
+    }
+    
+    .back-btn {
+        top: 15px;
+        left: 15px;
+        padding: 8px;
+        font-size: 16px;
+    }
+    
+    .form-control {
+        padding: 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .btn-form {
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
+    .container {
+        margin: 5px;
+        width: calc(100% - 10px);
+        border-radius: 10px;
+    }
+    
+    .header {
+        padding: 10px 15px;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .logo {
+        font-size: 18px;
+    }
+    
+    .logo i {
+        font-size: 16px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .left-panel {
+        padding: 20px 15px;
+        min-height: 200px;
+    }
+    
+    .left-panel h2 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .left-panel p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .right-panel {
+        padding: 20px 15px;
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .form-container h1 {
+        font-size: 1.4rem;
+    }
+    
+    .form-container .subtitle {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    .form-control {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    .btn-form {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    .flower-icon {
+        font-size: 50px;
+    }
+    
+    .header-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .header-buttons .btn-secondary {
+        font-size: 11px;
+    }
+    
+    .back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 6px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .container {
+        margin: 2px;
+        width: calc(100% - 4px);
+    }
+    
+    .left-panel h2 {
+        font-size: 1.3rem;
+    }
+    
+    .form-container h1 {
+        font-size: 1.2rem;
+    }
+    
+    .form-container .subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .left-panel {
+        padding: 15px 10px;
+    }
+    
+    .right-panel {
+        padding: 15px 10px;
+    }
+    
+    .flower-icon {
+        font-size: 40px;
+    }
+}
+
+/* Landscape orientation for mobile devices */
+@media (max-width: 768px) and (orientation: landscape) {
+    .container {
+        flex-direction: row;
+        height: auto;
+        min-height: auto;
+    }
+    
+    .left-panel {
+        flex: 0.6;
+        min-height: auto;
+        padding: 20px 15px;
+    }
+    
+    .right-panel {
+        flex: 1;
+        padding: 20px 15px;
+    }
+    
+    .left-panel h2 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+    
+    .left-panel p {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+    }
+    
+    .flower-icon {
+        font-size: 40px;
+        margin-top: 10px;
+    }
+    
+    .illustration {
+        margin-top: 10px;
+    }
+    
+    .form-container h1 {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+    
+    .form-container .subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .header {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    
+    .header-buttons {
+        flex-direction: row;
+    }
+}
+
+/* Animation for form elements */
+.form-container {
+    animation: slideInRight 0.6s ease-out;
+}
+
+.left-content {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Success/Error Messages */
+.message {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-form:hover,
+    .form-links a:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .btn-primary:active,
+    .btn-form:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+    
+    .form-control:focus {
+        transform: none;
+    }
+    
+    /* Improve tap targets for mobile */
+    .btn-primary,
+    .btn-secondary,
+    .btn-form {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .form-links a {
+        padding: 8px;
+        margin: -8px;
+    }
+    
+    .back-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* Prevent horizontal scroll on small screens */
+@media (max-width: 480px) {
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+    
+    .container {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .form-control {
+        border-width: 3px;
+    }
+    
+    .btn-form {
+        border: 2px solid #333;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .flower-icon {
+        animation: none;
+    }
+    
+    .floating-flowers * {
+        animation: none;
+    }
+}
